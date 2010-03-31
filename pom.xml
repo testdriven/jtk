@@ -52,4 +52,29 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<developers>
+		<developer>
+			<id>padcom</id>
+			<name>Matthias Hryniszak</name>
+			<email>padcom@gmail.com</email>
+			<url>http://padcom13.blogspot.com</url>
+			<organization>Aplaline</organization>
+			<organizationUrl>http://www.aplaline.com</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>kcrimson</id>
+			<name>Jarek Palka</name>
+			<email>please_update</email>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
 </project>
