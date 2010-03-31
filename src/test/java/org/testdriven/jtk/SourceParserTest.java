@@ -1,4 +1,4 @@
-package org.bitbucket.jtk;
+package org.testdriven.jtk;
 
 import static org.fest.assertions.Assertions.assertThat;
 

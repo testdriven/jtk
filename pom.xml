@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.bitbucket</groupId>
+	<groupId>org.testdriven.jtk</groupId>
 	<artifactId>jtk</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>JTK</name>
 	<description>Java Test Killer is a source code quality product that verifies if all test methods contain assertions.</description>
-	<url>http://bitbucket.org/padcom/jtk/</url>
+	<url>http://jtk.testdriven.org</url>
 	<scm>
 		<url>https://bitbucket.org/padcom/jtk/</url>
 	</scm>
