@@ -1,12 +1,15 @@
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.testdriven.jtk</groupId>
 	<artifactId>jtk</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>JTK</name>
-	<description>Java Test Killer is a source code quality product that verifies if all test methods contain assertions.</description>
+	<description>Java Test Killer is a source code quality assurance product that verifies if all test methods contain assertions.</description>
 	<url>http://jtk.testdriven.org</url>
 	<scm>
 		<url>https://bitbucket.org/padcom/jtk/</url>
@@ -87,11 +90,6 @@
 	</profiles>
 	<dependencies>
 		<dependency>
-			<groupId>com.thoughtworks.qdox</groupId>
-			<artifactId>qdox</artifactId>
-			<version>1.10.1</version>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.1</version>
@@ -138,4 +136,8 @@
 			<timezone>+1</timezone>
 		</developer>
 	</developers>
+	<modules>
+		<module>jtk-core</module>
+		<module>maven-jtk-plugin</module>
+	</modules>
 </project>
