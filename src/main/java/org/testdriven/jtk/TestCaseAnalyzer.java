@@ -1,4 +1,4 @@
-package org.bitbucket.jtk;
+package org.testdriven.jtk;
 
 import java.io.File;
 
@@ -12,6 +12,10 @@ public class TestCaseAnalyzer {
 
 	public File[] getTestCases() {
 		return testCases;
+	}
+
+	public AnalyzerResults analyzeTestCases() {
+		return new AnalyzerResults();
 	}
 
 }

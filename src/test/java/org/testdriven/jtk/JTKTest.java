@@ -1,4 +1,4 @@
-package org.bitbucket.jtk;
+package org.testdriven.jtk;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -18,7 +18,7 @@ public class JTKTest {
 		// when
 		File[] testCases = jtk.findTestCases();
 		// then
-		Assertions.assertThat(testCases).hasSize(2);
+		Assertions.assertThat(testCases).hasSize(3);
 	}
 
 	@Test(expected = IOException.class)
@@ -36,7 +36,7 @@ public class JTKTest {
 		TestCaseAnalyzer analyzer = jtk.createTestCaseAnalyzer();
 
 		assertThat(analyzer).isNotNull();
-		assertThat(analyzer.getTestCases()).hasSize(2);
+		assertThat(analyzer.getTestCases()).hasSize(3);
 	}
 
 }
