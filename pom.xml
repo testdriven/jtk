@@ -15,6 +15,10 @@
 		<system>hudson</system>
 		<url>http://hudson.testdriven.org/job/jtk</url>
 	</ciManagement>
+	<issueManagement>
+		<system>bitbucket</system>
+		<url>http://bitbucket.org/padcom/jtk/issues</url>
+	</issueManagement>
 	<distributionManagement>
 		<repository>
 			<id>testdriven-releases</id>
