@@ -138,6 +138,6 @@
 	</developers>
 	<modules>
 		<module>jtk-core</module>
-		<module>maven-jtk-plugin</module>
+		<module>jtk-maven-plugin</module>
 	</modules>
 </project>
