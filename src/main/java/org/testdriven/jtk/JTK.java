@@ -1,4 +1,4 @@
-package org.bitbucket.jtk;
+package org.testdriven.jtk;
 
 import java.io.File;
 import java.io.FileFilter;
