@@ -8,12 +8,12 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.EmptyVisitor;
 
-public class ByteCodeAnalyerTest {
+public class ByteCodeAnalyzerTest {
 
 	@Test
 	public void should_visit_test_methods() throws Exception {
 		ClassReader reader = new ClassReader(new FileInputStream(
-				"target/test-classes/org/testdriven/jtk/JTKTest.class "));
+				"target/test-classes/org/testdriven/jtk/JTKTest.class"));
 
 		reader.accept(new EmptyVisitor() {
 
