@@ -14,7 +14,7 @@
 				<groupId>org.testdriven.jtk</groupId>
 				<artifactId>jtk-maven-plugin</artifactId>
 				<configuration>
-					<testSources>src/test/resources/simple/src/test/java</testSources>
+					<testSources>src/test/resources/no-test-cases</testSources>
 				</configuration>
 			</plugin>
 		</plugins>
