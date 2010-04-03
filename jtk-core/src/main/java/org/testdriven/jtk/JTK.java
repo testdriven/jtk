@@ -19,7 +19,7 @@ public class JTK {
 		}
 	};
 
-	private static final FileFilter directoryFilter = new FileFilter() {
+	private static final FileFilter DIRECTORY_FILTER = new FileFilter() {
 
 		public boolean accept(File pathname) {
 			return pathname.isDirectory();
@@ -52,7 +52,7 @@ public class JTK {
 
 		// dive deep into directory structure
 
-		File[] directories = directory.listFiles(directoryFilter);
+		File[] directories = directory.listFiles(DIRECTORY_FILTER);
 
 		for (File dir : directories) {
 			files = findTestCases(dir);
