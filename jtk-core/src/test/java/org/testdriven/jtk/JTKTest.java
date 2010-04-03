@@ -18,7 +18,7 @@ public class JTKTest {
 		// when
 		File[] testCases = jtk.findTestCases();
 		// then
-		Assertions.assertThat(testCases).hasSize(3);
+		Assertions.assertThat(testCases).hasSize(4);
 	}
 
 	@Test(expected = IOException.class)
@@ -36,7 +36,7 @@ public class JTKTest {
 		TestCaseAnalyzer analyzer = jtk.createTestCaseAnalyzer();
 
 		assertThat(analyzer).isNotNull();
-		assertThat(analyzer.getTestCases()).hasSize(3);
+		assertThat(analyzer.getTestCases()).hasSize(4);
 	}
 
 }
