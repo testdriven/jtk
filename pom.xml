@@ -51,43 +51,6 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<profiles>
-		<profile>
-			<!-- Use this profile to run all tests including integration tests as it would run on integration server -->
-			<id>hudson</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>cobertura-maven-plugin</artifactId>
-						<version>2.3</version>
-						<configuration>
-							<formats>
-								<format>xml</format>
-								<format>html</format>
-							</formats>
-							<instrumentation>
-								<excludes>
-									<exclude>**/Main.class</exclude>
-									<exclude>**/*Test.class</exclude>
-									<exclude>**/testing/*.class</exclude>
-									<exclude>**/mocks/*.class</exclude>
-								</excludes>
-							</instrumentation>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>cobertura</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
