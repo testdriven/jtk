@@ -13,7 +13,7 @@ public class ByteCodeAnalyerTest {
 	@Test
 	public void should_visit_test_methods() throws Exception {
 		ClassReader reader = new ClassReader(new FileInputStream(
-				"target\\test-classes\\org\\testdriven\\jtk\\JTKTest.class "));
+				"target/test-classes/org/testdriven/jtk/JTKTest.class "));
 
 		reader.accept(new EmptyVisitor() {
 
