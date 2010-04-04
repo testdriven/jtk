@@ -36,7 +36,11 @@
 			<layout>default</layout>
 			<uniqueVersion>true</uniqueVersion>
 		</snapshotRepository>
-	</distributionManagement>
+		<site>
+			<id>jtk.testdriven.org</id>
+			<url>scp://jtk.testdriven.org/</url>
+		</site>
+  	</distributionManagement>
 	<build>
 		<pluginManagement>
 			<plugins>

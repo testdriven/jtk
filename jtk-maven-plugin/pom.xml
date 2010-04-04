@@ -12,6 +12,7 @@
 	<artifactId>jtk-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>JTK :: Maven Plugin</name>
+	<description>Maven plugin for the JTK tool</description>
 
 	<dependencies>
 		<dependency>
