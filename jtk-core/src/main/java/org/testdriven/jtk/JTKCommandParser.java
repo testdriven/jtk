@@ -19,14 +19,14 @@ public class JTKCommandParser {
 		Options options = getOptions();
 		CommandLine commandLine = parser.parse(options, args);
 		
-		JTKCommandOptions jtkOpts = new JTKCommandOptions(commandLine.getOptionValue("srcdir"));
+		JTKCommandOptions jtkOpts = new JTKCommandOptions(commandLine.getOptionValues("src"));
 		
 		return jtkOpts;
 	}
 
 	private static Options getOptions() {
 		Options options = new Options();
-		options.addOption(OptionBuilder.hasArg().isRequired().create("srcdir"));
+		options.addOption(OptionBuilder.hasArgs().withValueSeparator(';').isRequired().create("src"));
 
 		return options;
 	}

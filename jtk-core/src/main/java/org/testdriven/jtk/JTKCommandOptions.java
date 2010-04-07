@@ -2,14 +2,13 @@ package org.testdriven.jtk;
 
 public class JTKCommandOptions {
 
-	private final String sourceDirectory;
+    private final String[] sources;
 
-	public JTKCommandOptions(String sourceDirectory) {
-		this.sourceDirectory = sourceDirectory;
-	}
+    public JTKCommandOptions(String[] sources) {
+        this.sources = sources;
+    }
 
-	public String getSourceDirectory() {
-		return sourceDirectory;
-	}
-
+    public String[] getSources() {
+        return sources;
+    }
 }
