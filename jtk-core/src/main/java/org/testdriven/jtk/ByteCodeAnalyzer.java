@@ -69,8 +69,15 @@ public class ByteCodeAnalyzer {
 		@Override
 		public void visitMethodInsn(int opcode, String owner, String name,
 				String desc) {
-			System.out.println(owner + " " + name + " "+desc);
-			super.visitMethodInsn(opcode, owner, name, desc);
+			System.out.println(owner + " " + name + " " + desc);
+
+			if (!testCaseMethods.isEmpty()) {
+				if (owner.equals("org/fest/assertions/Assertions")) {
+
+					testCaseMethods.get(testCaseMethods.size() - 1)
+							.addAssertion(new TestCaseAssertion());
+				}
+			}
 		}
 
 	}
