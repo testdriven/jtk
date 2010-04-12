@@ -16,7 +16,7 @@ public class ByteCodeAnalyzerTest {
 	@Test
 	public void should_find_test_methods() throws Exception {
 		FileInputStream inputStream = new FileInputStream(
-				"target/test-classes/org/testdriven/jtk/JTKTest.class");
+				"target/test-classes/org/testdriven/testcases/SimpleTestCase.class");
 		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream);
 
 		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
@@ -31,20 +31,20 @@ public class ByteCodeAnalyzerTest {
 		});
 
 		assertThat(testCaseNames).containsOnly(
-				"should_throw_exception_if_base_dir_not_exists",
-				"should_create_test_case_analyzer", "should_find_test_cases");
+				"this_method_is_an_empty_test_case");
 	}
 
 	@Test
 	public void should_find_assertions_in_test_methods() throws Exception {
 		FileInputStream inputStream = new FileInputStream(
-				"target/test-classes/org/testdriven/jtk/JTKTest.class");
+				"target/test-classes/org/testdriven/testcases/SimpleTestCase.class");
 		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream);
 
 		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
 
 		TestCaseMethod testCaseMethod = testCaseMethods[0];
-		assertThat(testCaseMethod.getAssertions()).hasSize(1);
+		TestCaseAssertion[] assertions = testCaseMethod.getAssertions();
+		assertThat(assertions).hasSize(1);
 	}
 
 }

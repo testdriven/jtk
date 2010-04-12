@@ -1,8 +1,9 @@
 package org.testdriven.jtk;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 import java.io.File;
 
-import org.fest.assertions.Assertions;
 import org.junit.Test;
 
 public class TestCaseAnalyzerTest {
@@ -12,6 +13,6 @@ public class TestCaseAnalyzerTest {
 		File[] testCases = null;
 		TestCaseAnalyzer analyzer = new TestCaseAnalyzer(testCases);
 		AnalyzerResults results = analyzer.analyzeTestCases();
-		Assertions.assertThat(results);
+		assertThat(results);
 	}
 }
