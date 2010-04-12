@@ -14,9 +14,9 @@ public class ByteCodeAnalyzerTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void should_find_test_methods() throws Exception {
+	public void should_find_assertion_in_testcase() throws Exception {
 		FileInputStream inputStream = new FileInputStream(
-				"target/test-classes/org/testdriven/testcases/SimpleTestCase.class");
+				"target/test-classes/org/testdriven/testcases/AssertionTestCase.class");
 		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream);
 
 		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
@@ -32,19 +32,47 @@ public class ByteCodeAnalyzerTest {
 
 		assertThat(testCaseNames).containsOnly(
 				"this_method_is_an_empty_test_case");
-	}
-
-	@Test
-	public void should_find_assertions_in_test_methods() throws Exception {
-		FileInputStream inputStream = new FileInputStream(
-				"target/test-classes/org/testdriven/testcases/SimpleTestCase.class");
-		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream);
-
-		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
-
 		TestCaseMethod testCaseMethod = testCaseMethods[0];
 		TestCaseAssertion[] assertions = testCaseMethod.getAssertions();
 		assertThat(assertions).hasSize(1);
+		TestCaseAssertion assertion = assertions[0];
+		assertThat(assertion.getLineNumber()).isEqualTo(11);
+		assertThat(assertion.getAssertionClass()).isEqualTo("org/junit/Assert");
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void should_not_find_assertions_in_testcase() throws Exception {
+		FileInputStream inputStream = new FileInputStream(
+				"target/test-classes/org/testdriven/testcases/NoAssertionTestCase.class");
+		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream);
+
+		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
+		Collection<String> testCaseNames = CollectionUtils.collect(Arrays
+				.asList(testCaseMethods), new Transformer() {
+
+			@Override
+			public Object transform(Object input) {
+				return ((TestCaseMethod) input).getMethodName();
+			}
+		});
+		assertThat(testCaseNames).containsOnly(
+				"this_method_is_an_empty_test_case");
+		TestCaseMethod testCaseMethod = testCaseMethods[0];
+		TestCaseAssertion[] assertions = testCaseMethod.getAssertions();
+		assertThat(assertions).isEmpty();
+
+	}
+
+	@Test
+	public void should_not_find_testcase() throws Exception {
+
+		FileInputStream inputStream = new FileInputStream(
+				"target/test-classes/org/testdriven/testcases/EmptyTestCase.class");
+		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream);
+
+		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
+		assertThat(testCaseMethods).isEmpty();
 	}
 
 }

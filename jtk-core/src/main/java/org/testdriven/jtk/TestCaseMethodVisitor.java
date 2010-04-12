@@ -2,19 +2,22 @@ package org.testdriven.jtk;
 
 import java.util.List;
 import java.util.Stack;
+
 import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.commons.EmptyVisitor;
-import static java.lang.String.format;
 
 public class TestCaseMethodVisitor extends EmptyVisitor {
 
 	private final Stack<String> methods;
+	private final Stack<Integer> methodLines;
 	private final List<TestCaseMethod> testCaseMethods;
 
 	public TestCaseMethodVisitor(Stack<String> methods,
 			List<TestCaseMethod> testCaseMethods) {
 		this.methods = methods;
 		this.testCaseMethods = testCaseMethods;
+		this.methodLines = new Stack<Integer>();
 	}
 
 	@Override
@@ -27,11 +30,6 @@ public class TestCaseMethodVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public AnnotationVisitor visitAnnotation(String arg0, String arg1) {
-		return super.visitAnnotation(arg0, arg1);
-	}
-
-	@Override
 	public void visitMethodInsn(int opcode, String owner, String name,
 			String desc) {
 
@@ -40,8 +38,15 @@ public class TestCaseMethodVisitor extends EmptyVisitor {
 					|| owner.equals("org/junit/Assert")) {
 
 				testCaseMethods.get(testCaseMethods.size() - 1).addAssertion(
-						new TestCaseAssertion());
+						new TestCaseAssertion(owner,methodLines.peek()));
 			}
 		}
 	}
+
+	@Override
+	public void visitLineNumber(int arg0, Label arg1) {
+		System.out.println("visitLineNumber " + arg0);
+		methodLines.add(arg0);
+	}
+
 }

@@ -17,23 +17,22 @@ public class ByteCodeAnalyzer {
 
 	public ByteCodeAnalyzer(InputStream inputStream) {
 		this.inputStream = inputStream;
-
 	}
 
 	public TestCaseMethod[] getTestMethods() throws IOException {
 		ClassReader reader = new ClassReader(inputStream);
 
-		final Stack<String> methods = new Stack<String>();
-		final List<TestCaseMethod> testMethodsNames = new ArrayList<TestCaseMethod>();
+		final Stack<String> methodNames = new Stack<String>();
+		final List<TestCaseMethod> testMethods = new ArrayList<TestCaseMethod>();
 
-		final MethodVisitor methodVisitor = new TestCaseMethodVisitor(methods,
-				testMethodsNames);
-		final ClassVisitor classVisitor = new TestCaseClassVisitor(methods,
+		final MethodVisitor methodVisitor = new TestCaseMethodVisitor(
+				methodNames, testMethods);
+		final ClassVisitor classVisitor = new TestCaseClassVisitor(methodNames,
 				methodVisitor);
 
 		reader.accept(classVisitor, 0);
 
-		return testMethodsNames.toArray(new TestCaseMethod[methods.size()]);
+		return testMethods.toArray(new TestCaseMethod[testMethods.size()]);
 	}
 
 }
