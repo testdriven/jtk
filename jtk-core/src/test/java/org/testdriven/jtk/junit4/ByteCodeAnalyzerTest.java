@@ -1,4 +1,4 @@
-package org.testdriven.jtk;
+package org.testdriven.jtk.junit4;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -10,6 +10,9 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 import org.junit.Test;
+import org.testdriven.jtk.TestCaseAssertion;
+import org.testdriven.jtk.TestCaseMethod;
+import org.testdriven.jtk.junit4.ByteCodeAnalyzer;
 
 public class ByteCodeAnalyzerTest {
 
@@ -84,7 +87,7 @@ public class ByteCodeAnalyzerTest {
 		// given
 		String testCaseClass = "target/test-classes/org/testdriven/testcases/EmptyTestCase.class";
 		FileInputStream inputStream = new FileInputStream(testCaseClass);
-		
+
 		List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
 		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream,
 				assertionsFilter);
@@ -94,5 +97,31 @@ public class ByteCodeAnalyzerTest {
 
 		// than
 		assertThat(testCaseMethods).isEmpty();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void should_find_assertions_by_filter() throws Exception {
+		String testCaseClass = "target/test-classes/org/testdriven/testcases/MixedAssertionsTestCase.class";
+		FileInputStream inputStream = new FileInputStream(testCaseClass);
+
+		List<String> assertionsFilter = Arrays.asList("org.junit.Assert",
+				"org.fest.assertions.Assertions");
+		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream,
+				assertionsFilter);
+
+		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
+		Collection<String> testCaseNames = CollectionUtils.collect(Arrays
+				.asList(testCaseMethods), new Transformer() {
+
+			@Override
+			public Object transform(Object input) {
+				return ((TestCaseMethod) input).getMethodName();
+			}
+		});
+		assertThat(testCaseNames).containsOnly(
+				"this_method_is_an_empty_test_case");
+		TestCaseMethod testCaseMethod = testCaseMethods[0];
+		assertThat(testCaseMethod.getAssertions()).hasSize(2);
 	}
 }

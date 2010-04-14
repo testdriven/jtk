@@ -1,4 +1,4 @@
-package org.testdriven.jtk;
+package org.testdriven.jtk.junit4;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +9,8 @@ import java.util.Stack;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.testdriven.jtk.TestCaseAssertion;
+import org.testdriven.jtk.TestCaseMethod;
 
 public class ByteCodeAnalyzer {
 
@@ -35,7 +37,8 @@ public class ByteCodeAnalyzer {
 
 		reader.accept(classVisitor, 0);
 
-		return testCaseMethods.toArray(new TestCaseMethod[testCaseMethods.size()]);
+		return testCaseMethods.toArray(new TestCaseMethod[testCaseMethods
+				.size()]);
 	}
 
 	public List<String> getAssertionsFilter() {
@@ -62,6 +65,12 @@ public class ByteCodeAnalyzer {
 
 	public void addMethodName(String name) {
 		methodNames.push(name);
+	}
+
+	public boolean matchesAssetionsFilter(String owner) {
+
+		return hasTestCaseMehtods()
+				&& assertionsFilter.contains(owner.replace("/", "."));
 	}
 
 }

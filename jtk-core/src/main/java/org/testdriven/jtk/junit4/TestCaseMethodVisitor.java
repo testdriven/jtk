@@ -1,11 +1,12 @@
-package org.testdriven.jtk;
+package org.testdriven.jtk.junit4;
 
-import java.util.List;
 import java.util.Stack;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.commons.EmptyVisitor;
+import org.testdriven.jtk.TestCaseAssertion;
+import org.testdriven.jtk.TestCaseMethod;
 
 public class TestCaseMethodVisitor extends EmptyVisitor {
 
@@ -31,16 +32,15 @@ public class TestCaseMethodVisitor extends EmptyVisitor {
 	public void visitMethodInsn(int opcode, String owner, String name,
 			String desc) {
 
-		if (byteCodeAnalyzer.hasTestCaseMehtods()) {
-			if (owner.equals("org/fest/assertions/Assertions")
-					|| owner.equals("org/junit/Assert")) {
+		if (byteCodeAnalyzer.matchesAssetionsFilter(owner)) {
 
-				TestCaseAssertion testCaseAssertion = new TestCaseAssertion(
-						owner, methodLines.peek());
-				byteCodeAnalyzer.addAssertion(testCaseAssertion);
+			Integer lineNumber = methodLines.peek();
+			TestCaseAssertion testCaseAssertion = new TestCaseAssertion(owner,
+					lineNumber);
+			byteCodeAnalyzer.addAssertion(testCaseAssertion);
 
-			}
 		}
+
 	}
 
 	@Override

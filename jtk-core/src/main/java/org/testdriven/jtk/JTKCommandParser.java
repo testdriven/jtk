@@ -18,15 +18,17 @@ public class JTKCommandParser {
 		BasicParser parser = new BasicParser();
 		Options options = getOptions();
 		CommandLine commandLine = parser.parse(options, args);
-		
-		JTKCommandOptions jtkOpts = new JTKCommandOptions(commandLine.getOptionValues("src"));
-		
+
+		JTKCommandOptions jtkOpts = new JTKCommandOptions(commandLine
+				.getOptionValues("src"));
+
 		return jtkOpts;
 	}
 
 	private static Options getOptions() {
 		Options options = new Options();
-		options.addOption(OptionBuilder.hasArgs().withValueSeparator(';').isRequired().create("src"));
+		OptionBuilder.hasArgs().withValueSeparator(';').isRequired();
+		options.addOption(OptionBuilder.create("src"));
 
 		return options;
 	}

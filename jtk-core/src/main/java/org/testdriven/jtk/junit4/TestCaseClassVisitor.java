@@ -1,4 +1,4 @@
-package org.testdriven.jtk;
+package org.testdriven.jtk.junit4;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.EmptyVisitor;

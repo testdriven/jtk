@@ -2,6 +2,7 @@ package org.testdriven.jtk;
 
 import java.io.File;
 
+
 public class TestCaseAnalyzer {
 
 	private final File[] testCases;
