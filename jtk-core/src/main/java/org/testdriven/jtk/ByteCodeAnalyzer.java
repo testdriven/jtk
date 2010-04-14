@@ -14,25 +14,54 @@ public class ByteCodeAnalyzer {
 
 	public static final String JUNIT4_TEST_ANNOTATION = "org/junit/Test";
 	private final InputStream inputStream;
+	private final List<String> assertionsFilter;
+	// stack of all visited methods names
+	private final Stack<String> methodNames = new Stack<String>();
+	// list of all found test case methods
+	private final List<TestCaseMethod> testCaseMethods = new ArrayList<TestCaseMethod>();
 
-	public ByteCodeAnalyzer(InputStream inputStream) {
+	public ByteCodeAnalyzer(InputStream inputStream,
+			List<String> assertionsFilter) {
 		this.inputStream = inputStream;
+		this.assertionsFilter = assertionsFilter;
 	}
 
 	public TestCaseMethod[] getTestMethods() throws IOException {
 		ClassReader reader = new ClassReader(inputStream);
 
-		final Stack<String> methodNames = new Stack<String>();
-		final List<TestCaseMethod> testMethods = new ArrayList<TestCaseMethod>();
-
-		final MethodVisitor methodVisitor = new TestCaseMethodVisitor(
-				methodNames, testMethods);
-		final ClassVisitor classVisitor = new TestCaseClassVisitor(methodNames,
+		final MethodVisitor methodVisitor = new TestCaseMethodVisitor(this);
+		final ClassVisitor classVisitor = new TestCaseClassVisitor(this,
 				methodVisitor);
 
 		reader.accept(classVisitor, 0);
 
-		return testMethods.toArray(new TestCaseMethod[testMethods.size()]);
+		return testCaseMethods.toArray(new TestCaseMethod[testCaseMethods.size()]);
+	}
+
+	public List<String> getAssertionsFilter() {
+		return assertionsFilter;
+	}
+
+	public String getMethodName() {
+		return methodNames.pop();
+	}
+
+	public void addTestCaseMethod(TestCaseMethod testCaseMethod) {
+		testCaseMethods.add(testCaseMethod);
+
+	}
+
+	public boolean hasTestCaseMehtods() {
+		return !testCaseMethods.isEmpty();
+	}
+
+	public void addAssertion(TestCaseAssertion testCaseAssertion) {
+		testCaseMethods.get(testCaseMethods.size() - 1).addAssertion(
+				testCaseAssertion);
+	}
+
+	public void addMethodName(String name) {
+		methodNames.push(name);
 	}
 
 }

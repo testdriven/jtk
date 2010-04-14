@@ -5,6 +5,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
@@ -15,12 +16,19 @@ public class ByteCodeAnalyzerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void should_find_assertion_in_testcase() throws Exception {
-		FileInputStream inputStream = new FileInputStream(
-				"target/test-classes/org/testdriven/testcases/AssertionTestCase.class");
-		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream);
+		// given
+		String testCaseClass = "target/test-classes/org/testdriven/testcases/AssertionTestCase.class";
+		FileInputStream inputStream = new FileInputStream(testCaseClass);
 
+		List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
+
+		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream,
+				assertionsFilter);
+
+		// when
 		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
 
+		// than
 		Collection<String> testCaseNames = CollectionUtils.collect(Arrays
 				.asList(testCaseMethods), new Transformer() {
 
@@ -43,11 +51,18 @@ public class ByteCodeAnalyzerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void should_not_find_assertions_in_testcase() throws Exception {
-		FileInputStream inputStream = new FileInputStream(
-				"target/test-classes/org/testdriven/testcases/NoAssertionTestCase.class");
-		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream);
+		// given
+		String testCaseClass = "target/test-classes/org/testdriven/testcases/NoAssertionTestCase.class";
+		FileInputStream inputStream = new FileInputStream(testCaseClass);
 
+		List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
+		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream,
+				assertionsFilter);
+
+		// when
 		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
+
+		// than
 		Collection<String> testCaseNames = CollectionUtils.collect(Arrays
 				.asList(testCaseMethods), new Transformer() {
 
@@ -66,13 +81,18 @@ public class ByteCodeAnalyzerTest {
 
 	@Test
 	public void should_not_find_testcase() throws Exception {
+		// given
+		String testCaseClass = "target/test-classes/org/testdriven/testcases/EmptyTestCase.class";
+		FileInputStream inputStream = new FileInputStream(testCaseClass);
+		
+		List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
+		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream,
+				assertionsFilter);
 
-		FileInputStream inputStream = new FileInputStream(
-				"target/test-classes/org/testdriven/testcases/EmptyTestCase.class");
-		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream);
-
+		// when
 		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
+
+		// than
 		assertThat(testCaseMethods).isEmpty();
 	}
-
 }

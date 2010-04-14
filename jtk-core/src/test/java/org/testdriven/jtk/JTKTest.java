@@ -13,8 +13,9 @@ public class JTKTest {
 	@Test
 	public void should_find_test_cases() throws Exception {
 		// given
-		String dir = "src/test/java";
-		JTK jtk = new JTK(dir);
+		String sourcedir = "src/test/java";
+		String classdir = "";
+		JTK jtk = new JTK(sourcedir);
 		// when
 		File[] testCases = jtk.findTestCases();
 		// then

@@ -9,22 +9,20 @@ import org.objectweb.asm.commons.EmptyVisitor;
 
 public class TestCaseMethodVisitor extends EmptyVisitor {
 
-	private final Stack<String> methods;
 	private final Stack<Integer> methodLines;
-	private final List<TestCaseMethod> testCaseMethods;
+	private final ByteCodeAnalyzer byteCodeAnalyzer;
 
-	public TestCaseMethodVisitor(Stack<String> methods,
-			List<TestCaseMethod> testCaseMethods) {
-		this.methods = methods;
-		this.testCaseMethods = testCaseMethods;
+	public TestCaseMethodVisitor(ByteCodeAnalyzer byteCodeAnalyzer) {
+		this.byteCodeAnalyzer = byteCodeAnalyzer;
 		this.methodLines = new Stack<Integer>();
 	}
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String name, boolean visible) {
-		String methodName = methods.pop();
+		String methodName = byteCodeAnalyzer.getMethodName();
 		if (name.contains(ByteCodeAnalyzer.JUNIT4_TEST_ANNOTATION)) {
-			testCaseMethods.add(new TestCaseMethod(methodName));
+			TestCaseMethod testCaseMethod = new TestCaseMethod(methodName);
+			byteCodeAnalyzer.addTestCaseMethod(testCaseMethod);
 		}
 		return super.visitAnnotation(name, visible);
 	}
@@ -33,19 +31,20 @@ public class TestCaseMethodVisitor extends EmptyVisitor {
 	public void visitMethodInsn(int opcode, String owner, String name,
 			String desc) {
 
-		if (!testCaseMethods.isEmpty()) {
+		if (byteCodeAnalyzer.hasTestCaseMehtods()) {
 			if (owner.equals("org/fest/assertions/Assertions")
 					|| owner.equals("org/junit/Assert")) {
 
-				testCaseMethods.get(testCaseMethods.size() - 1).addAssertion(
-						new TestCaseAssertion(owner,methodLines.peek()));
+				TestCaseAssertion testCaseAssertion = new TestCaseAssertion(
+						owner, methodLines.peek());
+				byteCodeAnalyzer.addAssertion(testCaseAssertion);
+
 			}
 		}
 	}
 
 	@Override
 	public void visitLineNumber(int arg0, Label arg1) {
-		System.out.println("visitLineNumber " + arg0);
 		methodLines.add(arg0);
 	}
 
