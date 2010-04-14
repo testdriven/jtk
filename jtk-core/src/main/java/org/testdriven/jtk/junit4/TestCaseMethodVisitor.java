@@ -35,8 +35,8 @@ public class TestCaseMethodVisitor extends EmptyVisitor {
 		if (byteCodeAnalyzer.matchesAssetionsFilter(owner)) {
 
 			Integer lineNumber = methodLines.peek();
-			TestCaseAssertion testCaseAssertion = new TestCaseAssertion(owner,
-					lineNumber);
+			TestCaseAssertion testCaseAssertion = new TestCaseAssertion(owner
+					.replace("/", "."), lineNumber);
 			byteCodeAnalyzer.addAssertion(testCaseAssertion);
 
 		}

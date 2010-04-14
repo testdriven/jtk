@@ -59,8 +59,9 @@ public class ByteCodeAnalyzer {
 	}
 
 	public void addAssertion(TestCaseAssertion testCaseAssertion) {
-		testCaseMethods.get(testCaseMethods.size() - 1).addAssertion(
-				testCaseAssertion);
+		TestCaseMethod currentTestCaseMethod = testCaseMethods
+				.get(testCaseMethods.size() - 1);
+		currentTestCaseMethod.addAssertion(testCaseAssertion);
 	}
 
 	public void addMethodName(String name) {

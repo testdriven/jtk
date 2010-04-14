@@ -16,7 +16,22 @@ import org.testdriven.jtk.junit4.ByteCodeAnalyzer;
 
 public class ByteCodeAnalyzerTest {
 
-	@SuppressWarnings("unchecked")
+	private final static Transformer TESTCASE_NAME_TRANSFORMER = new Transformer() {
+
+		@Override
+		public Object transform(Object input) {
+			return ((TestCaseMethod) input).getMethodName();
+		}
+	};
+
+	private final static Transformer ASSERTION_CLASS_TRANSFORMER = new Transformer() {
+
+		@Override
+		public Object transform(Object input) {
+			return ((TestCaseAssertion) input).getAssertionClass();
+		}
+	};
+
 	@Test
 	public void should_find_assertion_in_testcase() throws Exception {
 		// given
@@ -32,14 +47,9 @@ public class ByteCodeAnalyzerTest {
 		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
 
 		// than
-		Collection<String> testCaseNames = CollectionUtils.collect(Arrays
-				.asList(testCaseMethods), new Transformer() {
 
-			@Override
-			public Object transform(Object input) {
-				return ((TestCaseMethod) input).getMethodName();
-			}
-		});
+		Collection<String> testCaseNames = collectFromArray(testCaseMethods,
+				TESTCASE_NAME_TRANSFORMER);
 
 		assertThat(testCaseNames).containsOnly(
 				"this_method_is_an_empty_test_case");
@@ -48,10 +58,9 @@ public class ByteCodeAnalyzerTest {
 		assertThat(assertions).hasSize(1);
 		TestCaseAssertion assertion = assertions[0];
 		assertThat(assertion.getLineNumber()).isEqualTo(11);
-		assertThat(assertion.getAssertionClass()).isEqualTo("org/junit/Assert");
+		assertThat(assertion.getAssertionClass()).isEqualTo("org.junit.Assert");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void should_not_find_assertions_in_testcase() throws Exception {
 		// given
@@ -66,14 +75,10 @@ public class ByteCodeAnalyzerTest {
 		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
 
 		// than
-		Collection<String> testCaseNames = CollectionUtils.collect(Arrays
-				.asList(testCaseMethods), new Transformer() {
 
-			@Override
-			public Object transform(Object input) {
-				return ((TestCaseMethod) input).getMethodName();
-			}
-		});
+		Collection<String> testCaseNames = collectFromArray(testCaseMethods,
+				TESTCASE_NAME_TRANSFORMER);
+
 		assertThat(testCaseNames).containsOnly(
 				"this_method_is_an_empty_test_case");
 		TestCaseMethod testCaseMethod = testCaseMethods[0];
@@ -99,9 +104,10 @@ public class ByteCodeAnalyzerTest {
 		assertThat(testCaseMethods).isEmpty();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void should_find_assertions_by_filter() throws Exception {
+
+		// given
 		String testCaseClass = "target/test-classes/org/testdriven/testcases/MixedAssertionsTestCase.class";
 		FileInputStream inputStream = new FileInputStream(testCaseClass);
 
@@ -110,18 +116,28 @@ public class ByteCodeAnalyzerTest {
 		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream,
 				assertionsFilter);
 
+		// when
 		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
-		Collection<String> testCaseNames = CollectionUtils.collect(Arrays
-				.asList(testCaseMethods), new Transformer() {
 
-			@Override
-			public Object transform(Object input) {
-				return ((TestCaseMethod) input).getMethodName();
-			}
-		});
+		// than
+		Collection<String> testCaseNames = collectFromArray(testCaseMethods,
+				TESTCASE_NAME_TRANSFORMER);
+
 		assertThat(testCaseNames).containsOnly(
 				"this_method_is_an_empty_test_case");
 		TestCaseMethod testCaseMethod = testCaseMethods[0];
-		assertThat(testCaseMethod.getAssertions()).hasSize(2);
+		TestCaseAssertion[] testCaseAssertions = testCaseMethod.getAssertions();
+
+		Collection<String> assertionsClasses = collectFromArray(
+				testCaseAssertions, ASSERTION_CLASS_TRANSFORMER);
+		assertThat(assertionsClasses).containsOnly("org.junit.Assert",
+				"org.fest.assertions.Assertions");
+	}
+
+	@SuppressWarnings("unchecked")
+	private Collection<String> collectFromArray(Object[] testCaseMethods,
+			Transformer transformer) {
+		return CollectionUtils.collect(Arrays.asList(testCaseMethods),
+				transformer);
 	}
 }
