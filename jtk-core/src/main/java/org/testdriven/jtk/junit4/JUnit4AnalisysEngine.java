@@ -1,5 +1,6 @@
 package org.testdriven.jtk.junit4;
 
+import org.testdriven.jtk.AnalisysEngine;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.testdriven.jtk.TestCaseAssertion;
 import org.testdriven.jtk.TestCaseMethod;
 
-public class ByteCodeAnalyzer {
+public class JUnit4AnalisysEngine implements AnalisysEngine {
 
 	public static final String JUNIT4_TEST_ANNOTATION = "org/junit/Test";
 	private final InputStream inputStream;
@@ -22,7 +23,7 @@ public class ByteCodeAnalyzer {
 	// list of all found test case methods
 	private final List<TestCaseMethod> testCaseMethods = new ArrayList<TestCaseMethod>();
 
-	public ByteCodeAnalyzer(InputStream inputStream,
+	public JUnit4AnalisysEngine(InputStream inputStream,
 			List<String> assertionsFilter) {
 		this.inputStream = inputStream;
 		this.assertionsFilter = assertionsFilter;

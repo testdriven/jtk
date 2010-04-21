@@ -1,22 +1,16 @@
 package org.testdriven.jtk;
 
-import java.io.File;
-
-
 public class TestCaseAnalyzer {
 
-	private final File[] testCases;
+    private final String[] srcDirs;
+    private final String[] classesDirs;
 
-	public TestCaseAnalyzer(File[] testCases) {
-		this.testCases = testCases;
-	}
+    TestCaseAnalyzer(String[] srcDirs, String[] classesDirs) {
+        this.srcDirs = srcDirs;
+        this.classesDirs = classesDirs;
+    }
 
-	public File[] getTestCases() {
-		return testCases;
-	}
-
-	public AnalyzerResults analyzeTestCases() {
-		return new AnalyzerResults();
-	}
-
+    public AnalyzerResults analyzeTestCases() {
+        return new AnalyzerResults();
+    }
 }

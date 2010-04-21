@@ -37,7 +37,6 @@ public class JTKTest {
 		TestCaseAnalyzer analyzer = jtk.createTestCaseAnalyzer();
 
 		assertThat(analyzer).isNotNull();
-		assertThat(analyzer.getTestCases()).hasSize(4);
 	}
 
 }

@@ -68,6 +68,6 @@ public class JTK {
 	}
 
 	public TestCaseAnalyzer createTestCaseAnalyzer(File[] testCases) {
-		return new TestCaseAnalyzer(findTestCases());
+		return new TestCaseAnalyzer(null,null);
 	}
 }

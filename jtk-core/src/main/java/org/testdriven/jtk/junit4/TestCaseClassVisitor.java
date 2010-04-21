@@ -5,10 +5,10 @@ import org.objectweb.asm.commons.EmptyVisitor;
 
 public class TestCaseClassVisitor extends EmptyVisitor {
 
-	private final ByteCodeAnalyzer byteCodeAnalyzer;
+	private final JUnit4AnalisysEngine byteCodeAnalyzer;
 	private final MethodVisitor methodVisitor;
 
-	public TestCaseClassVisitor(ByteCodeAnalyzer byteCodeAnalyzer,
+	public TestCaseClassVisitor(JUnit4AnalisysEngine byteCodeAnalyzer,
 			MethodVisitor methodVisitor) {
 		this.byteCodeAnalyzer = byteCodeAnalyzer;
 		this.methodVisitor = methodVisitor;

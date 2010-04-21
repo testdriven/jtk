@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.testdriven.jtk.TestCaseAssertion;
 import org.testdriven.jtk.TestCaseMethod;
 
-public class ByteCodeAnalyzerTest {
+public class JUnit4AnalisysEngineTest {
 
 	private final static Transformer TESTCASE_NAME_TRANSFORMER = new Transformer() {
 
@@ -39,14 +39,13 @@ public class ByteCodeAnalyzerTest {
 
 		List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
 
-		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream,
+		JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(inputStream,
 				assertionsFilter);
 
 		// when
 		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
 
 		// than
-
 		Collection<String> testCaseNames = collectFromArray(testCaseMethods,
 				TESTCASE_NAME_TRANSFORMER);
 
@@ -68,7 +67,7 @@ public class ByteCodeAnalyzerTest {
 		FileInputStream inputStream = new FileInputStream(testCaseClass);
 
 		List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
-		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream,
+		JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(inputStream,
 				assertionsFilter);
 
 		// when
@@ -94,7 +93,7 @@ public class ByteCodeAnalyzerTest {
 		FileInputStream inputStream = new FileInputStream(testCaseClass);
 
 		List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
-		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream,
+		JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(inputStream,
 				assertionsFilter);
 
 		// when
@@ -113,7 +112,7 @@ public class ByteCodeAnalyzerTest {
 
 		List<String> assertionsFilter = Arrays.asList("org.junit.Assert",
 				"org.fest.assertions.Assertions");
-		ByteCodeAnalyzer analyzer = new ByteCodeAnalyzer(inputStream,
+		JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(inputStream,
 				assertionsFilter);
 
 		// when
