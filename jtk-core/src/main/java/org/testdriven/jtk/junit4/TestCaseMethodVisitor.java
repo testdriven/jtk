@@ -10,19 +10,18 @@ import org.testdriven.jtk.TestCaseMethod;
 
 public class TestCaseMethodVisitor extends EmptyVisitor {
 
-	private final Stack<Integer> methodLines;
 	private final ByteCodeAnalyzer byteCodeAnalyzer;
+        private int currentLineNumber;
 
 	public TestCaseMethodVisitor(ByteCodeAnalyzer byteCodeAnalyzer) {
 		this.byteCodeAnalyzer = byteCodeAnalyzer;
-		this.methodLines = new Stack<Integer>();
 	}
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String name, boolean visible) {
 		String methodName = byteCodeAnalyzer.getMethodName();
 		if (name.contains(ByteCodeAnalyzer.JUNIT4_TEST_ANNOTATION)) {
-			TestCaseMethod testCaseMethod = new TestCaseMethod(methodName);
+			TestCaseMethod testCaseMethod = new TestCaseMethod(methodName,currentLineNumber);
 			byteCodeAnalyzer.addTestCaseMethod(testCaseMethod);
 		}
 		return super.visitAnnotation(name, visible);
@@ -34,9 +33,8 @@ public class TestCaseMethodVisitor extends EmptyVisitor {
 
 		if (byteCodeAnalyzer.matchesAssetionsFilter(owner)) {
 
-			Integer lineNumber = methodLines.peek();
 			TestCaseAssertion testCaseAssertion = new TestCaseAssertion(owner
-					.replace("/", "."), lineNumber);
+					.replace("/", "."), currentLineNumber);
 			byteCodeAnalyzer.addAssertion(testCaseAssertion);
 
 		}
@@ -44,8 +42,8 @@ public class TestCaseMethodVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitLineNumber(int arg0, Label arg1) {
-		methodLines.add(arg0);
+	public void visitLineNumber(int lineNumber, Label arg1) {
+		this.currentLineNumber = lineNumber;
 	}
 
 }

@@ -12,7 +12,6 @@ import org.apache.commons.collections.Transformer;
 import org.junit.Test;
 import org.testdriven.jtk.TestCaseAssertion;
 import org.testdriven.jtk.TestCaseMethod;
-import org.testdriven.jtk.junit4.ByteCodeAnalyzer;
 
 public class ByteCodeAnalyzerTest {
 
@@ -54,6 +53,7 @@ public class ByteCodeAnalyzerTest {
 		assertThat(testCaseNames).containsOnly(
 				"this_method_is_an_empty_test_case");
 		TestCaseMethod testCaseMethod = testCaseMethods[0];
+                assertThat(testCaseMethod.getLineNumber()).isEqualTo(7);
 		TestCaseAssertion[] assertions = testCaseMethod.getAssertions();
 		assertThat(assertions).hasSize(1);
 		TestCaseAssertion assertion = assertions[0];
