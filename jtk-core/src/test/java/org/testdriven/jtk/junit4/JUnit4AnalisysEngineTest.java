@@ -15,128 +15,126 @@ import org.testdriven.jtk.TestCaseMethod;
 
 public class JUnit4AnalisysEngineTest {
 
-	private final static Transformer TESTCASE_NAME_TRANSFORMER = new Transformer() {
+    private final static Transformer TESTCASE_NAME_TRANSFORMER = new Transformer() {
 
-		@Override
-		public Object transform(Object input) {
-			return ((TestCaseMethod) input).getMethodName();
-		}
-	};
+        @Override
+        public Object transform(Object input) {
+            return ((TestCaseMethod) input).getMethodName();
+        }
+    };
+    private final static Transformer ASSERTION_CLASS_TRANSFORMER = new Transformer() {
 
-	private final static Transformer ASSERTION_CLASS_TRANSFORMER = new Transformer() {
+        @Override
+        public Object transform(Object input) {
+            return ((TestCaseAssertion) input).getAssertionClass();
+        }
+    };
 
-		@Override
-		public Object transform(Object input) {
-			return ((TestCaseAssertion) input).getAssertionClass();
-		}
-	};
+    @Test
+    public void should_find_assertion_in_testcase() throws Exception {
+        // given
+        String testCaseClass = "target/test-classes/org/testdriven/testcases/AssertionTestCase.class";
+        FileInputStream inputStream = new FileInputStream(testCaseClass);
 
-	@Test
-	public void should_find_assertion_in_testcase() throws Exception {
-		// given
-		String testCaseClass = "target/test-classes/org/testdriven/testcases/AssertionTestCase.class";
-		FileInputStream inputStream = new FileInputStream(testCaseClass);
+        List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
 
-		List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
+        JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(assertionsFilter);
 
-		JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(inputStream,
-				assertionsFilter);
+        // when
+        TestCaseMethod[] testCaseMethods = analyzer.getTestMethods(inputStream);
 
-		// when
-		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
+        // than
+        Collection<String> testCaseNames = collectFromArray(testCaseMethods,
+                TESTCASE_NAME_TRANSFORMER);
 
-		// than
-		Collection<String> testCaseNames = collectFromArray(testCaseMethods,
-				TESTCASE_NAME_TRANSFORMER);
+        assertThat(testCaseNames).containsOnly(
+                "this_method_is_an_empty_test_case");
+        TestCaseMethod testCaseMethod = testCaseMethods[0];
+        assertThat(testCaseMethod.getLineNumber()).isEqualTo(7);
+        TestCaseAssertion[] assertions = testCaseMethod.getAssertions();
+        assertThat(assertions).hasSize(1);
+        TestCaseAssertion assertion = assertions[0];
+        assertThat(assertion.getLineNumber()).isEqualTo(11);
+        assertThat(assertion.getAssertionClass()).isEqualTo("org.junit.Assert");
+    }
 
-		assertThat(testCaseNames).containsOnly(
-				"this_method_is_an_empty_test_case");
-		TestCaseMethod testCaseMethod = testCaseMethods[0];
-                assertThat(testCaseMethod.getLineNumber()).isEqualTo(7);
-		TestCaseAssertion[] assertions = testCaseMethod.getAssertions();
-		assertThat(assertions).hasSize(1);
-		TestCaseAssertion assertion = assertions[0];
-		assertThat(assertion.getLineNumber()).isEqualTo(11);
-		assertThat(assertion.getAssertionClass()).isEqualTo("org.junit.Assert");
-	}
+    @Test
+    public void should_not_find_assertions_in_testcase() throws Exception {
+        // given
+        String testCaseClass = "target/test-classes/org/testdriven/testcases/NoAssertionTestCase.class";
+        FileInputStream inputStream = new FileInputStream(testCaseClass);
 
-	@Test
-	public void should_not_find_assertions_in_testcase() throws Exception {
-		// given
-		String testCaseClass = "target/test-classes/org/testdriven/testcases/NoAssertionTestCase.class";
-		FileInputStream inputStream = new FileInputStream(testCaseClass);
+        List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
+        JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(
+                assertionsFilter);
 
-		List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
-		JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(inputStream,
-				assertionsFilter);
+        // when
+        TestCaseMethod[] testCaseMethods = analyzer.getTestMethods(inputStream);
 
-		// when
-		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
+        // than
 
-		// than
+        Collection<String> testCaseNames = collectFromArray(testCaseMethods,
+                TESTCASE_NAME_TRANSFORMER);
 
-		Collection<String> testCaseNames = collectFromArray(testCaseMethods,
-				TESTCASE_NAME_TRANSFORMER);
+        assertThat(testCaseNames).containsOnly(
+                "this_method_is_an_empty_test_case");
+        TestCaseMethod testCaseMethod = testCaseMethods[0];
+        TestCaseAssertion[] assertions = testCaseMethod.getAssertions();
+        assertThat(assertions).isEmpty();
 
-		assertThat(testCaseNames).containsOnly(
-				"this_method_is_an_empty_test_case");
-		TestCaseMethod testCaseMethod = testCaseMethods[0];
-		TestCaseAssertion[] assertions = testCaseMethod.getAssertions();
-		assertThat(assertions).isEmpty();
+    }
 
-	}
+    @Test
+    public void should_not_find_testcase() throws Exception {
+        // given
+        String testCaseClass = "target/test-classes/org/testdriven/testcases/EmptyTestCase.class";
+        FileInputStream inputStream = new FileInputStream(testCaseClass);
 
-	@Test
-	public void should_not_find_testcase() throws Exception {
-		// given
-		String testCaseClass = "target/test-classes/org/testdriven/testcases/EmptyTestCase.class";
-		FileInputStream inputStream = new FileInputStream(testCaseClass);
+        List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
+        JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(
+                assertionsFilter);
 
-		List<String> assertionsFilter = Arrays.asList("org.junit.Assert");
-		JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(inputStream,
-				assertionsFilter);
+        // when
+        TestCaseMethod[] testCaseMethods = analyzer.getTestMethods(inputStream);
 
-		// when
-		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
+        // than
+        assertThat(testCaseMethods).isEmpty();
+    }
 
-		// than
-		assertThat(testCaseMethods).isEmpty();
-	}
+    @Test
+    public void should_find_assertions_by_filter() throws Exception {
 
-	@Test
-	public void should_find_assertions_by_filter() throws Exception {
+        // given
+        String testCaseClass = "target/test-classes/org/testdriven/testcases/MixedAssertionsTestCase.class";
+        FileInputStream inputStream = new FileInputStream(testCaseClass);
 
-		// given
-		String testCaseClass = "target/test-classes/org/testdriven/testcases/MixedAssertionsTestCase.class";
-		FileInputStream inputStream = new FileInputStream(testCaseClass);
+        List<String> assertionsFilter = Arrays.asList("org.junit.Assert",
+                "org.fest.assertions.Assertions");
+        JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(
+                assertionsFilter);
 
-		List<String> assertionsFilter = Arrays.asList("org.junit.Assert",
-				"org.fest.assertions.Assertions");
-		JUnit4AnalisysEngine analyzer = new JUnit4AnalisysEngine(inputStream,
-				assertionsFilter);
+        // when
+        TestCaseMethod[] testCaseMethods = analyzer.getTestMethods(inputStream);
 
-		// when
-		TestCaseMethod[] testCaseMethods = analyzer.getTestMethods();
+        // than
+        Collection<String> testCaseNames = collectFromArray(testCaseMethods,
+                TESTCASE_NAME_TRANSFORMER);
 
-		// than
-		Collection<String> testCaseNames = collectFromArray(testCaseMethods,
-				TESTCASE_NAME_TRANSFORMER);
+        assertThat(testCaseNames).containsOnly(
+                "this_method_is_an_empty_test_case");
+        TestCaseMethod testCaseMethod = testCaseMethods[0];
+        TestCaseAssertion[] testCaseAssertions = testCaseMethod.getAssertions();
 
-		assertThat(testCaseNames).containsOnly(
-				"this_method_is_an_empty_test_case");
-		TestCaseMethod testCaseMethod = testCaseMethods[0];
-		TestCaseAssertion[] testCaseAssertions = testCaseMethod.getAssertions();
+        Collection<String> assertionsClasses = collectFromArray(
+                testCaseAssertions, ASSERTION_CLASS_TRANSFORMER);
+        assertThat(assertionsClasses).containsOnly("org.junit.Assert",
+                "org.fest.assertions.Assertions");
+    }
 
-		Collection<String> assertionsClasses = collectFromArray(
-				testCaseAssertions, ASSERTION_CLASS_TRANSFORMER);
-		assertThat(assertionsClasses).containsOnly("org.junit.Assert",
-				"org.fest.assertions.Assertions");
-	}
-
-	@SuppressWarnings("unchecked")
-	private Collection<String> collectFromArray(Object[] testCaseMethods,
-			Transformer transformer) {
-		return CollectionUtils.collect(Arrays.asList(testCaseMethods),
-				transformer);
-	}
+    @SuppressWarnings("unchecked")
+    private Collection<String> collectFromArray(Object[] testCaseMethods,
+            Transformer transformer) {
+        return CollectionUtils.collect(Arrays.asList(testCaseMethods),
+                transformer);
+    }
 }

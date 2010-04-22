@@ -1,78 +1,36 @@
 package org.testdriven.jtk.junit4;
 
+import java.io.InputStream;
 import org.testdriven.jtk.AnalisysEngine;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.testdriven.jtk.TestCaseAssertion;
 import org.testdriven.jtk.TestCaseMethod;
 
 public class JUnit4AnalisysEngine implements AnalisysEngine {
 
-	public static final String JUNIT4_TEST_ANNOTATION = "org/junit/Test";
-	private final InputStream inputStream;
-	private final List<String> assertionsFilter;
-	// stack of all visited methods names
-	private final Stack<String> methodNames = new Stack<String>();
-	// list of all found test case methods
-	private final List<TestCaseMethod> testCaseMethods = new ArrayList<TestCaseMethod>();
+    public static final String JUNIT4_TEST_ANNOTATION = "org/junit/Test";
+    private final List<String> assertionsFilter;
 
-	public JUnit4AnalisysEngine(InputStream inputStream,
-			List<String> assertionsFilter) {
-		this.inputStream = inputStream;
-		this.assertionsFilter = assertionsFilter;
-	}
+    public JUnit4AnalisysEngine(List<String> assertionsFilter) {
+        this.assertionsFilter = assertionsFilter;
+    }
 
-	public TestCaseMethod[] getTestMethods() throws IOException {
-		ClassReader reader = new ClassReader(inputStream);
+    @Override
+    public TestCaseMethod[] getTestMethods(InputStream inputStream) throws IOException {
+        ClassReader reader = new ClassReader(inputStream);
 
-		final MethodVisitor methodVisitor = new TestCaseMethodVisitor(this);
-		final ClassVisitor classVisitor = new TestCaseClassVisitor(this,
-				methodVisitor);
+        JUnit4Analisys analisys = new JUnit4Analisys(assertionsFilter);
 
-		reader.accept(classVisitor, 0);
+        final MethodVisitor methodVisitor = new TestCaseMethodVisitor(analisys);
+        final ClassVisitor classVisitor = new TestCaseClassVisitor(analisys,
+                methodVisitor);
 
-		return testCaseMethods.toArray(new TestCaseMethod[testCaseMethods
-				.size()]);
-	}
+        reader.accept(classVisitor, 0);
 
-	public List<String> getAssertionsFilter() {
-		return assertionsFilter;
-	}
-
-	public String getMethodName() {
-		return methodNames.pop();
-	}
-
-	public void addTestCaseMethod(TestCaseMethod testCaseMethod) {
-		testCaseMethods.add(testCaseMethod);
-
-	}
-
-	public boolean hasTestCaseMehtods() {
-		return !testCaseMethods.isEmpty();
-	}
-
-	public void addAssertion(TestCaseAssertion testCaseAssertion) {
-		TestCaseMethod currentTestCaseMethod = testCaseMethods
-				.get(testCaseMethods.size() - 1);
-		currentTestCaseMethod.addAssertion(testCaseAssertion);
-	}
-
-	public void addMethodName(String name) {
-		methodNames.push(name);
-	}
-
-	public boolean matchesAssetionsFilter(String owner) {
-
-		return hasTestCaseMehtods()
-				&& assertionsFilter.contains(owner.replace("/", "."));
-	}
-
+        return analisys.getTestMethods();
+    }
 }

@@ -1,6 +1,5 @@
 package org.testdriven.jtk.junit4;
 
-import java.util.Stack;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;
@@ -10,40 +9,38 @@ import org.testdriven.jtk.TestCaseMethod;
 
 public class TestCaseMethodVisitor extends EmptyVisitor {
 
-	private final JUnit4AnalisysEngine byteCodeAnalyzer;
-        private int currentLineNumber;
+    private final JUnit4Analisys analisys;
+    private int currentLineNumber;
 
-	public TestCaseMethodVisitor(JUnit4AnalisysEngine byteCodeAnalyzer) {
-		this.byteCodeAnalyzer = byteCodeAnalyzer;
-	}
+    public TestCaseMethodVisitor(JUnit4Analisys analisys) {
+        this.analisys = analisys;
+    }
 
-	@Override
-	public AnnotationVisitor visitAnnotation(String name, boolean visible) {
-		String methodName = byteCodeAnalyzer.getMethodName();
-		if (name.contains(JUnit4AnalisysEngine.JUNIT4_TEST_ANNOTATION)) {
-			TestCaseMethod testCaseMethod = new TestCaseMethod(methodName,currentLineNumber);
-			byteCodeAnalyzer.addTestCaseMethod(testCaseMethod);
-		}
-		return super.visitAnnotation(name, visible);
-	}
+    @Override
+    public AnnotationVisitor visitAnnotation(String name, boolean visible) {
+        String methodName = analisys.getMethodName();
+        if (name.contains(JUnit4AnalisysEngine.JUNIT4_TEST_ANNOTATION)) {
+            TestCaseMethod testCaseMethod = new TestCaseMethod(methodName, currentLineNumber);
+            analisys.addTestCaseMethod(testCaseMethod);
+        }
+        return super.visitAnnotation(name, visible);
+    }
 
-	@Override
-	public void visitMethodInsn(int opcode, String owner, String name,
-			String desc) {
+    @Override
+    public void visitMethodInsn(int opcode, String owner, String name,
+            String desc) {
 
-		if (byteCodeAnalyzer.matchesAssetionsFilter(owner)) {
+        if (analisys.matchesAssetionsFilter(owner)) {
 
-			TestCaseAssertion testCaseAssertion = new TestCaseAssertion(owner
-					.replace("/", "."), currentLineNumber);
-			byteCodeAnalyzer.addAssertion(testCaseAssertion);
+            TestCaseAssertion testCaseAssertion = new TestCaseAssertion(owner.replace("/", "."), currentLineNumber);
+            analisys.addAssertion(testCaseAssertion);
 
-		}
+        }
 
-	}
+    }
 
-	@Override
-	public void visitLineNumber(int lineNumber, Label arg1) {
-		this.currentLineNumber = lineNumber;
-	}
-
+    @Override
+    public void visitLineNumber(int lineNumber, Label arg1) {
+        this.currentLineNumber = lineNumber;
+    }
 }
