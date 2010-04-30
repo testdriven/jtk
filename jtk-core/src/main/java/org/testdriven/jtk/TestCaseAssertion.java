@@ -1,7 +1,5 @@
 package org.testdriven.jtk;
 
-
-
 public class TestCaseAssertion {
 
 	private final String asserttionClass;

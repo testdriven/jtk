@@ -9,16 +9,16 @@ import org.testdriven.jtk.TestCaseMethod;
 
 public class TestCaseMethodVisitor extends EmptyVisitor {
 
-    private final JUnit4Analisys analisys;
+    private final JUnit4AnalisysContext analisys;
     private int currentLineNumber;
 
-    public TestCaseMethodVisitor(JUnit4Analisys analisys) {
+    public TestCaseMethodVisitor(JUnit4AnalisysContext analisys) {
         this.analisys = analisys;
     }
 
     @Override
     public AnnotationVisitor visitAnnotation(String name, boolean visible) {
-        String methodName = analisys.getMethodName();
+        String methodName = analisys.getCurrentMethodName();
         if (name.contains(JUnit4AnalisysEngine.JUNIT4_TEST_ANNOTATION)) {
             TestCaseMethod testCaseMethod = new TestCaseMethod(methodName, currentLineNumber);
             analisys.addTestCaseMethod(testCaseMethod);

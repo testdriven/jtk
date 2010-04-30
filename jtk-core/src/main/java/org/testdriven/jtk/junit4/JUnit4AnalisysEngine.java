@@ -23,14 +23,14 @@ public class JUnit4AnalisysEngine implements AnalisysEngine {
     public TestCaseMethod[] getTestMethods(InputStream inputStream) throws IOException {
         ClassReader reader = new ClassReader(inputStream);
 
-        JUnit4Analisys analisys = new JUnit4Analisys(assertionsFilter);
+        JUnit4AnalisysContext context = new JUnit4AnalisysContext(assertionsFilter);
 
-        final MethodVisitor methodVisitor = new TestCaseMethodVisitor(analisys);
-        final ClassVisitor classVisitor = new TestCaseClassVisitor(analisys,
+        final MethodVisitor methodVisitor = new TestCaseMethodVisitor(context);
+        final ClassVisitor classVisitor = new TestCaseClassVisitor(context,
                 methodVisitor);
 
         reader.accept(classVisitor, 0);
 
-        return analisys.getTestMethods();
+        return context.getTestMethods();
     }
 }
