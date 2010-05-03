@@ -7,18 +7,20 @@ import org.mockito.Mockito;
 
 public class TestCaseAnalyzerTest {
 
-	@Test
-	public void should_analyze_test_cases() throws Exception{
-		// when
-		AnalisysEngine engine = Mockito.mock(AnalisysEngine.class);
-		String[] srcDirs = new String[] { "src/test/java" };
-		String[] classesDirs = new String[] { "target/test-classes" };
-		TestCaseAnalyzer analyer = new TestCaseAnalyzer(engine, srcDirs,
-				classesDirs);
-		// then
-		AnalyzerResults results = analyer.analyzeTestCases();
+    @Test
+    public void should_analyze_test_cases() throws Exception {
+        // when
+        AnalisysEngine engine = Mockito.mock(AnalisysEngine.class);
+        String[] srcDirs = new String[]{"src/test/java"};
+        String[] classesDirs = new String[]{"target/test-classes"};
+        TestCaseAnalyzer analyer = new TestCaseAnalyzer(engine, srcDirs,
+                classesDirs);
+        // then
+        AnalyzerResults results = analyer.analyzeTestCases();
+        final TestCase[] testCases = results.getTestCases();
 
-		// assert
-		assertThat(results.getTestCases()).hasSize(4);
-	}
+        // assert
+        assertThat(testCases).hasSize(4);
+        //testCases[0].
+    }
 }
