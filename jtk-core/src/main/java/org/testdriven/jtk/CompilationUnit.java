@@ -24,4 +24,8 @@ class CompilationUnit {
 
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    void setClassFile(File classFile) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }
