@@ -41,6 +41,12 @@
 			<url>scp://jtk.testdriven.org/</url>
 		</site>
   	</distributionManagement>
+        <pluginRepositories>
+            <pluginRepository>
+                <id>m.g.o-public</id>
+                <url>http://maven.glassfish.org/content/groups/public/</url>
+            </pluginRepository>
+        </pluginRepositories>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -55,7 +61,13 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<dependencies>
+        <repositories>
+            <repository>
+                <id>m.g.o-public</id>
+                <url>http://maven.glassfish.org/content/groups/public/</url>
+            </repository>
+        </repositories>
+        <dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -105,6 +117,7 @@
 	</developers>
 	<modules>
 		<module>jtk-core</module>
+		<module>jtk-hudson-plugin</module>
 		<module>jtk-maven-plugin</module>
 	</modules>
 </project>
