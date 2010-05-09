@@ -82,6 +82,7 @@ public class HelloWorldBuilder extends Builder {
      */
     @Extension // this marker indicates Hudson that this is an implementation of an extension point.
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
+        private static final int MINIMUM_NAME_LENGTH = 4;
         /**
          * To persist global configuration information,
          * simply store it in a field and call save().
@@ -103,7 +104,7 @@ public class HelloWorldBuilder extends Builder {
             if(value.length()==0) {
                 return FormValidation.error("Please set a name");
             }
-            if(value.length()<4) {
+            if(value.length()<MINIMUM_NAME_LENGTH) {
                 return FormValidation.warning("Isn't the name too short?");
             }
             return FormValidation.ok();
