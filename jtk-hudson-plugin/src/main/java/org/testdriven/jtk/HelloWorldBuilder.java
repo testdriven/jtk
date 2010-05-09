@@ -56,10 +56,11 @@ public class HelloWorldBuilder extends Builder {
         // since this is a dummy, we just say 'hello world' and call that a build
 
         // this also shows how you can consult the global configuration of the builder
-        if(getDescriptor().useFrench())
+        if(getDescriptor().useFrench()) {
             listener.getLogger().println("Bonjour, "+name+"!");
-        else
+        } else {
             listener.getLogger().println("Hello, "+name+"!");
+        }
         return true;
     }
 
@@ -99,10 +100,12 @@ public class HelloWorldBuilder extends Builder {
          *      Indicates the outcome of the validation. This is sent to the browser.
          */
         public FormValidation doCheckName(@QueryParameter String value) throws IOException, ServletException {
-            if(value.length()==0)
+            if(value.length()==0) {
                 return FormValidation.error("Please set a name");
-            if(value.length()<4)
+            }
+            if(value.length()<4) {
                 return FormValidation.warning("Isn't the name too short?");
+            }
             return FormValidation.ok();
         }
 
