@@ -3,6 +3,7 @@ package org.testdriven.jtk;
 import static java.util.Arrays.asList;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,8 +69,15 @@ public class TestCaseAnalyzer {
                 }
             }
         }
+
+        List<TestCase> testCases = new ArrayList<TestCase>();
+        for(CompilationUnit unit:units){
+            TestCase testCase = new TestCase(unit);
+            TestCaseMethod[] methods = engine.getTestMethods(new FileInputStream(unit.getClassFile()));
+            testCases.add(testCase);
+        }
         
-        return new AnalyzerResults();
+        return new AnalyzerResults(testCases);
     }
 
     private Collection<CompilationUnit> findTestCasesSources() throws IOException {

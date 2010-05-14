@@ -20,7 +20,8 @@ public class TestCaseAnalyzerTest {
         final TestCase[] testCases = results.getTestCases();
 
         // assert
-        assertThat(testCases).hasSize(4);
+        //should find 8 test cases, make this 
+        assertThat(testCases).hasSize(8);
         //testCases[0].
     }
 }
