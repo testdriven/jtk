@@ -1,5 +1,6 @@
 package org.testdriven.jtk;
 
+import java.io.InputStream;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
@@ -11,6 +12,7 @@ public class TestCaseAnalyzerTest {
     public void should_analyze_test_cases() throws Exception {
         // when
         AnalisysEngine engine = Mockito.mock(AnalisysEngine.class);
+        Mockito.when(engine.getTestMethods(Mockito.any(InputStream.class))).thenReturn(new TestCaseMethod[]{new TestCaseMethod(null, 0)});
         String[] srcDirs = new String[]{"src/test/java"};
         String[] classesDirs = new String[]{"target/test-classes"};
         TestCaseAnalyzer analyer = new TestCaseAnalyzer(engine, srcDirs,
@@ -22,6 +24,10 @@ public class TestCaseAnalyzerTest {
         // assert
         //should find 8 test cases, make this 
         assertThat(testCases).hasSize(8);
-        //testCases[0].
+        for (TestCase testCase : testCases) {
+            assertThat(testCase.getUnit()).isNotNull();
+            assertThat(testCase.getTestCaseMethods()).isNotEmpty();
+        }
+
     }
 }

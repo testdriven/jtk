@@ -74,6 +74,7 @@ public class TestCaseAnalyzer {
         for(CompilationUnit unit:units){
             TestCase testCase = new TestCase(unit);
             TestCaseMethod[] methods = engine.getTestMethods(new FileInputStream(unit.getClassFile()));
+            testCase.setTestCaseMethods(methods);
             testCases.add(testCase);
         }
         
