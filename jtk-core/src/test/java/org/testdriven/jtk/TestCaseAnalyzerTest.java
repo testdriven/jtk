@@ -4,15 +4,15 @@ import java.io.InputStream;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 
 public class TestCaseAnalyzerTest {
 
     @Test
     public void should_analyze_test_cases() throws Exception {
         // when
-        AnalisysEngine engine = Mockito.mock(AnalisysEngine.class);
-        Mockito.when(engine.getTestMethods(Mockito.any(InputStream.class))).thenReturn(new TestCaseMethod[]{new TestCaseMethod(null, 0)});
+        AnalisysEngine engine = mock(AnalisysEngine.class);
+        when(engine.getTestMethods(any(InputStream.class))).thenReturn(new TestCaseMethod[]{new TestCaseMethod(null, 0)});
         String[] srcDirs = new String[]{"src/test/java"};
         String[] classesDirs = new String[]{"target/test-classes"};
         TestCaseAnalyzer analyer = new TestCaseAnalyzer(engine, srcDirs,
@@ -28,6 +28,6 @@ public class TestCaseAnalyzerTest {
             assertThat(testCase.getUnit()).isNotNull();
             assertThat(testCase.getTestCaseMethods()).isNotEmpty();
         }
-
+        verify(engine, times(8)).getTestMethods(any(InputStream.class));
     }
 }
