@@ -63,26 +63,31 @@ public class TestCaseAnalyzer {
 
         //match test cases sources with class
         for (CompilationUnit unit : units) {
-            for(String baseDir:classesDirs){
+            for (String baseDir : classesDirs) {
                 File classFile = unit.getClassFile(baseDir);
-                if(classFile.exists()){
+                if (classFile.exists()) {
+                    System.out.println(unit.getSourceFile().getAbsolutePath() + "->" + classFile.getAbsolutePath());
                     unit.setClassFile(classFile);
+                    break;
                 }
             }
-            if(unit.getClassFile()==null){
-                throw new FileNotFoundException("Class file for source "+unit.getSourceFile().getAbsolutePath()+" not found");
+            if (unit.getClassFile() == null) {
+                throw new FileNotFoundException("Class file for source " + unit.getSourceFile().getAbsolutePath() + " not found");
             }
         }
 
         List<TestCase> testCases = new ArrayList<TestCase>();
-        for(CompilationUnit unit:units){
+        for (CompilationUnit unit : units) {
             TestCase testCase = new TestCase(unit);
             final File classFile = unit.getClassFile();
-            TestCaseMethod[] methods = engine.getTestMethods(new FileInputStream(classFile));
+            System.out.println(unit.getSourceFile().getAbsolutePath() + "->" + (classFile!=null?classFile.getAbsolutePath():null));
+            final FileInputStream inputStream = new FileInputStream(classFile);
+            System.out.println("engine "+engine);
+            TestCaseMethod[] methods = engine.getTestMethods(inputStream);
             testCase.setTestCaseMethods(methods);
             testCases.add(testCase);
         }
-        
+
         return new AnalyzerResults(testCases);
     }
 

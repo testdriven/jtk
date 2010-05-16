@@ -27,7 +27,9 @@ public class TestCaseAnalyzerTest {
         assertThat(testCases).hasSize(9);
         for (TestCase testCase : testCases) {
             assertThat(testCase.getUnit()).isNotNull();
+            assertThat(testCase.getUnit().getClassFile()).isNotNull();
             assertThat(testCase.getTestCaseMethods()).isNotEmpty();
+
         }
         verify(engine, times(9)).getTestMethods(any(InputStream.class));
     }

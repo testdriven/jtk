@@ -2,6 +2,7 @@ package org.testdriven.jtk;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import org.testdriven.jtk.junit4.JUnit4AnalisysEngine;
 
 public class JTK {
@@ -23,9 +24,9 @@ public class JTK {
     }
 
     public TestCaseAnalyzer createTestCaseAnalyzer() {
-        AnalisysEngine engine = new JUnit4AnalisysEngine(null);
+        AnalisysEngine engine = new JUnit4AnalisysEngine(Arrays.asList("org.junit.Assert"));
         String[] sourcesDirs = new String[]{sourcesDir.getAbsolutePath()};
         String[] classesDirs = new String[]{classesDir.getAbsolutePath()};
-        return new TestCaseAnalyzer(null, sourcesDirs, classesDirs);
+        return new TestCaseAnalyzer(engine, sourcesDirs, classesDirs);
     }
 }

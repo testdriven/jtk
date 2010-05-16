@@ -2,18 +2,21 @@ package org.testdriven.jtk;
 
 public final class Main {
 
-	/**
-	 * Main application entry point
-	 */
-	public static void main(final String[] args) throws  Exception{
-            JTKCommandParser parser = new JTKCommandParser(args);
-            JTKCommandOptions options = parser.parse();
+    /**
+     * Main application entry point
+     */
+    public static void main(final String[] args) throws Exception {
+        JTKCommandParser parser = new JTKCommandParser(args);
+        JTKCommandOptions options = parser.parse();
+        final String sources = options.getSources()[0];
+        System.out.println("Sources " + sources);
+        final String classes = options.getClasses()[0];
+        System.out.println("Classes " + classes);
+        JTK jtk = new JTK(sources, classes);
+        TestCaseAnalyzer analyzer = jtk.createTestCaseAnalyzer();
+        AnalyzerResults results = analyzer.analyzeTestCases();
 
-            JTK jtk = new JTK(options.getSources()[0],options.getClasses()[0]);
-            TestCaseAnalyzer analyzer = jtk.createTestCaseAnalyzer();
-            AnalyzerResults results = analyzer.analyzeTestCases();
-
-            AnalyzerResultsPrinter printer = new AnalyzerResultsPrinter(System.out);
-            printer.writeSummary(results);
-	}
+        AnalyzerResultsPrinter printer = new AnalyzerResultsPrinter(System.out);
+        printer.writeSummary(results);
+    }
 }

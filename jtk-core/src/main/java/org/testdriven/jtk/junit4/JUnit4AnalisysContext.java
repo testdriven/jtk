@@ -46,7 +46,7 @@ public class JUnit4AnalisysContext {
 		methodName = name;
 	}
 
-	public boolean matchesAssetionsFilter(String owner) {
+	public boolean matchesAssertionsFilter(String owner) {
 
 		return hasTestCaseMehtods()
 				&& assertionsFilter.contains(owner.replace("/", "."));

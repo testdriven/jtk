@@ -30,7 +30,7 @@ public class TestCaseMethodVisitor extends EmptyVisitor {
     public void visitMethodInsn(int opcode, String owner, String name,
             String desc) {
 
-        if (analisys.matchesAssetionsFilter(owner)) {
+        if (analisys.matchesAssertionsFilter(owner)) {
 
             TestCaseAssertion testCaseAssertion = new TestCaseAssertion(owner.replace("/", "."), currentLineNumber);
             analisys.addAssertion(testCaseAssertion);
