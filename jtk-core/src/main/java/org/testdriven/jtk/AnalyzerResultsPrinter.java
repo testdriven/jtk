@@ -5,11 +5,8 @@
 
 package org.testdriven.jtk;
 
-import java.io.BufferedWriter;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import org.testdriven.jtk.AnalyzerResults;
 
 /**
  *

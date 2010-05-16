@@ -6,7 +6,6 @@ import org.testdriven.jtk.junit4.JUnit4AnalisysEngine;
 
 public class JTK {
 
-    private static final String TEST_JAVA_SUFFIX = "Test.java";
     private final File sourcesDir;
     private final File classesDir;
 

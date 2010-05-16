@@ -8,29 +8,34 @@ import org.apache.commons.cli.ParseException;
 
 public class JTKCommandParser {
 
-	private final String[] args;
+    private static final String CLASSES_OPTION = "classes";
+    private static final String SOURCES_OPTION = "sources";
+    private final String[] args;
 
-	public JTKCommandParser(String[] args) {
-		this.args = args;
-	}
+    public JTKCommandParser(String[] args) {
+        this.args = args;
+    }
 
-	public JTKCommandOptions parse() throws ParseException {
-		BasicParser parser = new BasicParser();
-		Options options = getOptions();
-		CommandLine commandLine = parser.parse(options, args);
+    public JTKCommandOptions parse() throws ParseException {
+        BasicParser parser = new BasicParser();
+        Options options = getOptions();
+        CommandLine commandLine = parser.parse(options, args);
+        final String[] sources = commandLine.getOptionValues(SOURCES_OPTION);
+        final String[] classes = commandLine.getOptionValues(CLASSES_OPTION);
 
-		JTKCommandOptions jtkOpts = new JTKCommandOptions(commandLine
-				.getOptionValues("src"));
+        JTKCommandOptions jtkOpts = new JTKCommandOptions(sources, classes);
 
-		return jtkOpts;
-	}
+        return jtkOpts;
+    }
 
-	private static Options getOptions() {
-		Options options = new Options();
-		OptionBuilder.hasArgs().withValueSeparator(';').isRequired();
-		options.addOption(OptionBuilder.create("src"));
+    private static Options getOptions() {
+        Options options = new Options();
+        OptionBuilder.hasArgs().withValueSeparator(';').isRequired();
+        options.addOption(OptionBuilder.create(SOURCES_OPTION));
 
-		return options;
-	}
+        OptionBuilder.hasArgs().withValueSeparator(';').isRequired();
+        options.addOption(OptionBuilder.create(CLASSES_OPTION));
 
+        return options;
+    }
 }
