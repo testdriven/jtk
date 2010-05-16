@@ -22,12 +22,17 @@ public class CheckTestCasesMojo extends AbstractMojo {
         this.testSources = testSources;
     }
 
+    public void setTestClasses(String testClasses) {
+        this.testClasses = testClasses;
+    }
+
     @Override
     public void execute() throws MojoExecutionException {
         try {
             JTK jtk = new JTK(testSources, testClasses);
             TestCaseAnalyzer analyzer = jtk.createTestCaseAnalyzer();
-            getLog().info("JTK Result: " + analyzer.analyzeTestCases());
+            final AnalyzerResults results = analyzer.analyzeTestCases();
+            getLog().info("JTK Result: " + results);
         } catch (IOException e) {
             throw new MojoExecutionException("Error executing JTK", e);
         }
