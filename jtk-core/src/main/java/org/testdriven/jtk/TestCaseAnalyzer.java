@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,12 +69,16 @@ public class TestCaseAnalyzer {
                     unit.setClassFile(classFile);
                 }
             }
+            if(unit.getClassFile()==null){
+                throw new FileNotFoundException("Class file for source "+unit.getSourceFile().getAbsolutePath()+" not found");
+            }
         }
 
         List<TestCase> testCases = new ArrayList<TestCase>();
         for(CompilationUnit unit:units){
             TestCase testCase = new TestCase(unit);
-            TestCaseMethod[] methods = engine.getTestMethods(new FileInputStream(unit.getClassFile()));
+            final File classFile = unit.getClassFile();
+            TestCaseMethod[] methods = engine.getTestMethods(new FileInputStream(classFile));
             testCase.setTestCaseMethods(methods);
             testCases.add(testCase);
         }

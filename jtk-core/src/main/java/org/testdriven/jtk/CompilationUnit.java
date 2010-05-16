@@ -44,4 +44,10 @@ class CompilationUnit {
     public void setClassFile(File classFile) {
         this.classFile = classFile;
     }
+
+    public File getSourceFile() {
+        return sourceFile;
+    }
+
+    
 }

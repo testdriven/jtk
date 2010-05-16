@@ -1,5 +1,6 @@
 package org.testdriven.jtk;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -29,5 +30,18 @@ public class TestCaseAnalyzerTest {
             assertThat(testCase.getTestCaseMethods()).isNotEmpty();
         }
         verify(engine, times(9)).getTestMethods(any(InputStream.class));
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void should_throw_exception_when_classes_not_found() throws Exception {
+        // when
+        AnalisysEngine engine = mock(AnalisysEngine.class);
+        when(engine.getTestMethods(any(InputStream.class))).thenReturn(new TestCaseMethod[]{new TestCaseMethod(null, 0)});
+        String[] srcDirs = new String[]{"src/test/java"};
+        String[] classesDirs = new String[]{"target/"};
+        TestCaseAnalyzer analyer = new TestCaseAnalyzer(engine, srcDirs,
+                classesDirs);
+        // then
+        AnalyzerResults results = analyer.analyzeTestCases();
     }
 }
