@@ -28,7 +28,7 @@ public class AnalyzerResultsPrinterTest {
         printer.writeSummary(results);
 
         //than
-        String summary = output.toString();
-        Assert.assertEquals("no test cases found", summary);
+        String summary = new String(output.toByteArray());
+        Assert.assertEquals("no test cases found\n", summary);
     }
 }

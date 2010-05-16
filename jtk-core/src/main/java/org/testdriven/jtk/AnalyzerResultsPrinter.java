@@ -26,6 +26,8 @@ class AnalyzerResultsPrinter {
         if(results.getTestCases().length == 0){
             writer.println("no test cases found");
         }
+
+        writer.flush();
     }
 
 }

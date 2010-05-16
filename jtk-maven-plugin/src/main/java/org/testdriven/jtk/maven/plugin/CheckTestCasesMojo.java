@@ -15,37 +15,21 @@ import org.testdriven.jtk.TestCaseAnalyzer;
  */
 public class CheckTestCasesMojo extends AbstractMojo {
 
-	private String testSources = "src/test/java";
+    private String testSources = "src/test/java";
+    private String testClasses = "target/test-classes";
 
-	public void setTestSources(String testSources) {
-		this.testSources = testSources;
-	}
+    public void setTestSources(String testSources) {
+        this.testSources = testSources;
+    }
 
-	@Override
-	public void execute() throws MojoExecutionException {
-		try {
-			JTK jtk = new JTK(testSources);
-			File[] testCases = readTestCases(jtk);
-			if (testCases.length > 0) {
-				TestCaseAnalyzer analyser = jtk.createTestCaseAnalyzer(testCases);
-				AnalyzerResults results = analyser.analyzeTestCases();
-				getLog().info("JTK Result: " + results);
-			}
-		} catch (IOException e) {
-			throw new MojoExecutionException("Error executing JTK", e);
-		}
-	}
-
-	private File[] readTestCases(JTK jtk) {
-		File[] testCases = jtk.findTestCases();
-		if (testCases.length == 0) {
-			getLog().warn("No test cases fund under '" + testSources + "'");
-		} else {
-			getLog().info("Found " + testCases.length + " test case(s):");
-			for (File testCase : testCases) {
-				getLog().info(testCase.getPath());
-			}
-		}
-		return testCases;
-	}
+    @Override
+    public void execute() throws MojoExecutionException {
+        try {
+            JTK jtk = new JTK(testSources, testClasses);
+            TestCaseAnalyzer analyzer = jtk.createTestCaseAnalyzer();
+            getLog().info("JTK Result: " + analyzer.analyzeTestCases());
+        } catch (IOException e) {
+            throw new MojoExecutionException("Error executing JTK", e);
+        }
+    }
 }
