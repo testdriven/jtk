@@ -15,94 +15,100 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 public class TestCaseAnalyzer {
 
-    private final class DirectoryLister extends DirectoryWalker {
+	private final class DirectoryLister extends DirectoryWalker {
 
-        public DirectoryLister() {
-            super(null, new WildcardFileFilter("*.java"), -1);
-        }
+		public DirectoryLister() {
+			super(null, new WildcardFileFilter("*.java"), -1);
+		}
 
-        public Collection<File> listSourceFiles(File startDirectory)
-                throws IOException {
-            Collection<File> files = new ArrayList<File>();
+		public Collection<File> listSourceFiles(File startDirectory)
+				throws IOException {
+			Collection<File> files = new ArrayList<File>();
 
-            walk(startDirectory, files);
+			walk(startDirectory, files);
 
-            return files;
-        }
+			return files;
+		}
 
-        @SuppressWarnings("unchecked")
-        @Override
-        protected void handleFile(File file, int depth, Collection results)
-                throws IOException {
-            results.add(file);
-        }
-    }
-    private final List<String> sourcesDirs;
-    private final List<String> classesDirs;
-    private final AnalisysEngine engine;
+		@SuppressWarnings("unchecked")
+		@Override
+		protected void handleFile(File file, int depth, Collection results)
+				throws IOException {
+			results.add(file);
+		}
+	}
 
-    public TestCaseAnalyzer(AnalisysEngine engine, String[] sourceDirs,
-            String[] classesDirs) {
+	private final List<String> sourcesDirs;
+	private final List<String> classesDirs;
+	private final AnalisysEngine engine;
 
-        if (sourceDirs != null) {
-            this.sourcesDirs = asList(sourceDirs);
-        } else {
-            this.sourcesDirs = asList(new String[]{});
-        }
+	public TestCaseAnalyzer(AnalisysEngine engine, String[] sourceDirs,
+			String[] classesDirs) {
 
-        if (classesDirs != null) {
-            this.classesDirs = asList(classesDirs);
-        } else {
-            this.classesDirs = asList(new String[]{});
-        }
-        this.engine = engine;
-    }
+		if (sourceDirs != null) {
+			this.sourcesDirs = asList(sourceDirs);
+		} else {
+			this.sourcesDirs = asList(new String[] {});
+		}
 
-    public AnalyzerResults analyzeTestCases() throws IOException {
-        Collection<CompilationUnit> units = findTestCasesSources();
+		if (classesDirs != null) {
+			this.classesDirs = asList(classesDirs);
+		} else {
+			this.classesDirs = asList(new String[] {});
+		}
+		this.engine = engine;
+	}
 
-        //match test cases sources with class
-        for (CompilationUnit unit : units) {
-            for (String baseDir : classesDirs) {
-                File classFile = unit.getClassFile(baseDir);
-                if (classFile.exists()) {
-                    System.out.println(unit.getSourceFile().getAbsolutePath() + "->" + classFile.getAbsolutePath());
-                    unit.setClassFile(classFile);
-                    break;
-                }
-            }
-            if (unit.getClassFile() == null) {
-                throw new FileNotFoundException("Class file for source " + unit.getSourceFile().getAbsolutePath() + " not found");
-            }
-        }
+	public AnalyzerResults analyzeTestCases() throws IOException {
+		Collection<CompilationUnit> units = findTestCasesSources();
 
-        List<TestCase> testCases = new ArrayList<TestCase>();
-        for (CompilationUnit unit : units) {
-            TestCase testCase = new TestCase(unit);
-            final File classFile = unit.getClassFile();
-            System.out.println(unit.getSourceFile().getAbsolutePath() + "->" + (classFile!=null?classFile.getAbsolutePath():null));
-            final FileInputStream inputStream = new FileInputStream(classFile);
-            System.out.println("engine "+engine);
-            TestCaseMethod[] methods = engine.getTestMethods(inputStream);
-            testCase.setTestCaseMethods(methods);
-            testCases.add(testCase);
-        }
+		// match test cases sources with class
+		matchTestCasesClasses(units);
 
-        return new AnalyzerResults(testCases);
-    }
+		List<TestCase> testCases = new ArrayList<TestCase>();
+		for (CompilationUnit unit : units) {
+			TestCase testCase = new TestCase(unit);
+			final File classFile = unit.getClassFile();
+			final FileInputStream inputStream = new FileInputStream(classFile);
+			TestCaseMethod[] methods = engine.getTestMethods(inputStream);
+			testCase.setTestCaseMethods(methods);
+			testCases.add(testCase);
+		}
 
-    private Collection<CompilationUnit> findTestCasesSources() throws IOException {
-        // lists all test cases source files
-        DirectoryLister dirWalker = new DirectoryLister();
-        Collection<CompilationUnit> units = new ArrayList<CompilationUnit>();
-        for (String baseSrcDir : sourcesDirs) {
-            final File sourcesDir = new File(baseSrcDir);
-            final Collection<File> sourceFiles = dirWalker.listSourceFiles(sourcesDir);
-            for (File file : sourceFiles) {
-                CompilationUnit unit = new CompilationUnit(sourcesDir, file);
-                units.add(unit);
-            }
-        }
-        return units;
-    }
+		return new AnalyzerResults(testCases);
+	}
+
+	private void matchTestCasesClasses(Collection<CompilationUnit> units)
+			throws FileNotFoundException {
+		for (CompilationUnit unit : units) {
+			for (String baseDir : classesDirs) {
+				File classFile = unit.getClassFile(baseDir);
+				if (classFile.exists()) {
+					unit.setClassFile(classFile);
+					break;
+				}
+			}
+			if (unit.getClassFile() == null) {
+				throw new FileNotFoundException("Class file for source "
+						+ unit.getSourceFile().getAbsolutePath() + " not found");
+			}
+		}
+	}
+
+	private Collection<CompilationUnit> findTestCasesSources()
+			throws IOException {
+		// lists all test cases source files
+		DirectoryLister dirWalker = new DirectoryLister();
+		Collection<CompilationUnit> units = new ArrayList<CompilationUnit>();
+		for (String baseSrcDir : sourcesDirs) {
+			final File sourcesDir = new File(baseSrcDir);
+			final Collection<File> sourceFiles = dirWalker
+					.listSourceFiles(sourcesDir);
+			for (File file : sourceFiles) {
+				CompilationUnit unit = new CompilationUnit(sourcesDir, file);
+				units.add(unit);
+			}
+		}
+		return units;
+	}
 }

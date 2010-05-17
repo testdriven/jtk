@@ -44,6 +44,6 @@ public class TestCaseAnalyzerTest {
         TestCaseAnalyzer analyer = new TestCaseAnalyzer(engine, srcDirs,
                 classesDirs);
         // then
-        AnalyzerResults results = analyer.analyzeTestCases();
+        analyer.analyzeTestCases();
     }
 }
