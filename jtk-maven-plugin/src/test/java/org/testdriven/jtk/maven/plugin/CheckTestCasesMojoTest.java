@@ -5,7 +5,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 
 public class CheckTestCasesMojoTest extends AbstractMojoTestCase {
-
+/*
 	public void testThePluginWorks() throws Exception {
 		// arrange
 		File pom = getTestFile("src/test/resources/simple/pom.xml");
@@ -17,7 +17,7 @@ public class CheckTestCasesMojoTest extends AbstractMojoTestCase {
 		// assert
 		assertTrue("Should not trow exceptions here", true);
 	}
-
+*/
 	public void testThePluginWillPrintInfoWhenNoTestCasesAreFound() throws Exception {
 		// arrange
 		File pom = getTestFile("src/test/resources/no-test-cases/pom.xml");
