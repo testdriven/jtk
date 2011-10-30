@@ -12,10 +12,10 @@
 	<description>Java Test Killer is a source code quality assurance product that verifies if all test methods contain assertions.</description>
 	<url>http://jtk.testdriven.org</url>
 	<scm>
-		<url>scm:git:git://github.com/padcom/jtk/</url>
+		<url>https://github.com/padcom/jtk</url>
 	</scm>
 	<ciManagement>
-		<system>hudson</system>
+		<system>jenkins</system>
 		<url>http://jenkins.testdriven.org/job/jtk</url>
 	</ciManagement>
 	<issueManagement>
