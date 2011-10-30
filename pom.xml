@@ -12,15 +12,15 @@
 	<description>Java Test Killer is a source code quality assurance product that verifies if all test methods contain assertions.</description>
 	<url>http://jtk.testdriven.org</url>
 	<scm>
-		<url>https://bitbucket.org/padcom/jtk/</url>
+		<url>scm:git:git://github.com/padcom/jtk/</url>
 	</scm>
 	<ciManagement>
 		<system>hudson</system>
-		<url>http://hudson.testdriven.org/job/jtk</url>
+		<url>http://jenkins.testdriven.org/job/jtk</url>
 	</ciManagement>
 	<issueManagement>
-		<system>bitbucket</system>
-		<url>http://bitbucket.org/padcom/jtk/issues</url>
+		<system>github</system>
+		<url>https://github.com/padcom/jtk/issues</url>
 	</issueManagement>
 	<distributionManagement>
 		<repository>
@@ -41,12 +41,12 @@
 			<url>scp://jtk.testdriven.org/</url>
 		</site>
   	</distributionManagement>
-        <pluginRepositories>
-            <pluginRepository>
-                <id>m.g.o-public</id>
-                <url>http://maven.glassfish.org/content/groups/public/</url>
-            </pluginRepository>
-        </pluginRepositories>
+	<pluginRepositories>
+			<pluginRepository>
+				<id>m.g.o-public</id>
+				<url>http://maven.glassfish.org/content/groups/public/</url>
+			</pluginRepository>
+		</pluginRepositories>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -61,13 +61,13 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-        <repositories>
-            <repository>
-                <id>m.g.o-public</id>
-                <url>http://maven.glassfish.org/content/groups/public/</url>
-            </repository>
-        </repositories>
-        <dependencies>
+	<repositories>
+		<repository>
+			<id>m.g.o-public</id>
+			<url>http://maven.glassfish.org/content/groups/public/</url>
+		</repository>
+	</repositories>
+	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
