@@ -20,7 +20,7 @@
 	</ciManagement>
 	<issueManagement>
 		<system>github</system>
-		<url>https://github.com/padcom/jtk/issues</url>
+		<url>https://github.com/testdriven/jtk/issues</url>
 	</issueManagement>
 	<distributionManagement>
 		<repository>
