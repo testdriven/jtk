@@ -80,9 +80,11 @@ public class TestCaseAnalyzer {
 
 	private void matchTestCasesClasses(Collection<CompilationUnit> units)
 			throws FileNotFoundException {
+
 		for (CompilationUnit unit : units) {
 			for (String baseDir : classesDirs) {
 				File classFile = unit.getClassFile(baseDir);
+				System.out.println(classFile.getAbsolutePath());
 				if (classFile.exists()) {
 					unit.setClassFile(classFile);
 					break;
