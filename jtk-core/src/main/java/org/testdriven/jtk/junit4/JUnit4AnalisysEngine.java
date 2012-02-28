@@ -12,25 +12,27 @@ import org.testdriven.jtk.TestCaseMethod;
 
 public class JUnit4AnalisysEngine implements AnalisysEngine {
 
-    public static final String JUNIT4_TEST_ANNOTATION = "org/junit/Test";
-    private final List<String> assertionsFilter;
+	public static final String JUNIT4_TEST_ANNOTATION = "org/junit/Test";
+	private final List<String> assertionsFilter;
 
-    public JUnit4AnalisysEngine(List<String> assertionsFilter) {
-        this.assertionsFilter = assertionsFilter;
-    }
+	public JUnit4AnalisysEngine(List<String> assertionsFilter) {
+		this.assertionsFilter = assertionsFilter;
+	}
 
-    @Override
-    public TestCaseMethod[] getTestMethods(InputStream inputStream) throws IOException {
-        ClassReader reader = new ClassReader(inputStream);
+	@Override
+	public TestCaseMethod[] getTestMethods(InputStream inputStream)
+			throws IOException {
+		ClassReader reader = new ClassReader(inputStream);
 
-        JUnit4AnalisysContext context = new JUnit4AnalisysContext(assertionsFilter);
+		JUnit4AnalisysContext context = new JUnit4AnalisysContext(
+				assertionsFilter);
 
-        final MethodVisitor methodVisitor = new TestCaseMethodVisitor(context);
-        final ClassVisitor classVisitor = new TestCaseClassVisitor(context,
-                methodVisitor);
+		final MethodVisitor methodVisitor = new TestCaseMethodVisitor(context);
+		final ClassVisitor classVisitor = new TestCaseClassVisitor(context,
+				methodVisitor);
 
-        reader.accept(classVisitor, 0);
+		reader.accept(classVisitor, 0);
 
-        return context.getTestMethods();
-    }
+		return context.getTestMethods();
+	}
 }
