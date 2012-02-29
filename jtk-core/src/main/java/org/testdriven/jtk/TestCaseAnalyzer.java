@@ -15,7 +15,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 public class TestCaseAnalyzer {
 
-	private final class DirectoryLister extends DirectoryWalker {
+	private final class DirectoryLister extends DirectoryWalker<File> {
 
 		public DirectoryLister() {
 			super(null, new WildcardFileFilter("*.java"), -1);
@@ -30,9 +30,8 @@ public class TestCaseAnalyzer {
 			return files;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
-		protected void handleFile(File file, int depth, Collection results)
+		protected void handleFile(File file, int depth, Collection<File> results)
 				throws IOException {
 			results.add(file);
 		}
@@ -80,9 +79,11 @@ public class TestCaseAnalyzer {
 
 	private void matchTestCasesClasses(Collection<CompilationUnit> units)
 			throws FileNotFoundException {
+
 		for (CompilationUnit unit : units) {
 			for (String baseDir : classesDirs) {
 				File classFile = unit.getClassFile(baseDir);
+				System.out.println(classFile.getAbsolutePath());
 				if (classFile.exists()) {
 					unit.setClassFile(classFile);
 					break;

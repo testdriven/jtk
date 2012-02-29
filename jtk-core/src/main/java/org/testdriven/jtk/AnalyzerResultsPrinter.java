@@ -11,15 +11,15 @@ import java.io.PrintWriter;
  * 
  * @author jpalka
  */
-class AnalyzerResultsPrinter {
+public class AnalyzerResultsPrinter {
 
 	private final PrintWriter writer;
 
-	AnalyzerResultsPrinter(OutputStream output) {
+	public AnalyzerResultsPrinter(OutputStream output) {
 		this.writer = new PrintWriter(output);
 	}
 
-	void writeSummary(AnalyzerResults results) {
+	public void writeSummary(AnalyzerResults results) {
 		if (results.getTestCases().length == 0) {
 			writer.println("no test cases found");
 

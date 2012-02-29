@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>jtk</artifactId>
+		<groupId>org.testdriven.jtk</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>jtk-cli</artifactId>
+
+	<name>JTK :: CLI</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<programs>
+						<program>
+							<mainClass>org.jtk.cli.Main</mainClass>
+							<name>jtk</name>
+						</program>
+					</programs>
+					<repositoryLayout>flat</repositoryLayout>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.testdriven.jtk</groupId>
+			<artifactId>jtk-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>
