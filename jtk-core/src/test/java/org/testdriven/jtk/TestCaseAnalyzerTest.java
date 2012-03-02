@@ -24,14 +24,14 @@ public class TestCaseAnalyzerTest {
 
         // assert
         //should find 8 test cases, make this 
-        assertThat(testCases).hasSize(9);
+        assertThat(testCases).hasSize(8);
         for (TestCase testCase : testCases) {
             assertThat(testCase.getUnit()).isNotNull();
             assertThat(testCase.getUnit().getClassFile()).isNotNull();
             assertThat(testCase.getTestCaseMethods()).isNotEmpty();
 
         }
-        verify(engine, times(9)).getTestMethods(any(InputStream.class));
+        verify(engine, times(8)).getTestMethods(any(InputStream.class));
     }
 
     @Test(expected = FileNotFoundException.class)
