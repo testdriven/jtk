@@ -8,44 +8,45 @@
 	<packaging>pom</packaging>
 	<name>JTK</name>
 	<description>Java Test Killer is a source code quality assurance product that verifies if all test methods contain assertions.</description>
-	<url>http://jtk.testdriven.org</url>
+	<url>http://testdriven.org/jtk</url>
+
 	<scm>
 		<connection>scm:git:https://github.com/testdriven/jtk</connection>
 		<url>https://github.com/testdriven/jtk</url>
 	</scm>
+
 	<ciManagement>
 		<system>jenkins</system>
 		<url>http://jenkins.testdriven.org/job/jtk</url>
 	</ciManagement>
+
 	<issueManagement>
 		<system>github</system>
 		<url>https://github.com/testdriven/jtk/issues</url>
 	</issueManagement>
+
 	<distributionManagement>
 		<repository>
 			<id>testdriven-releases</id>
-			<name>TestDriven Release Repository</name>
-			<url>http://nexus.testdriven.org/content/repositories/releases/</url>
-			<layout>default</layout>
+			<url>http://testdriven.org/nexus/content/repositories/releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>testdriven-snapshots</id>
-			<name>TestDriven Snapshots Repository</name>
-			<url>http://nexus.testdriven.org/content/repositories/snapshots/</url>
-			<layout>default</layout>
-			<uniqueVersion>true</uniqueVersion>
+			<url>http://testdriven.org/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 		<site>
-			<id>jtk.testdriven.org</id>
-			<url>scp://jtk.testdriven.org/</url>
+			<id>testdriven.org</id>
+			<url>scp://testdriven.org/srv/www/testdriven.org/html/jtk/</url>
 		</site>
-  	</distributionManagement>
+	</distributionManagement>
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>m.g.o-public</id>
 			<url>http://maven.glassfish.org/content/groups/public/</url>
 		</pluginRepository>
 	</pluginRepositories>
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -57,13 +58,25 @@
 						<target>1.6</target>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.2</version>
+					<dependencies>
+						<dependency><!-- add support for ssh/scp -->
+							<groupId>org.apache.maven.wagon</groupId>
+							<artifactId>wagon-ssh</artifactId>
+							<version>1.0</version>
+						</dependency>
+					</dependencies>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 	<repositories>
 		<repository>
 			<id>m.g.o-public</id>
-			<url>http://maven.glassfish.org/content/groups/public/</url>
+			<url>https://maven.glassfish.org/content/groups/public/</url>
 		</repository>
 	</repositories>
 	<dependencies>
