@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.testdriven</groupId>
+		<artifactId>testdriven</artifactId>
+		<version>4</version>
+	</parent>
+
 	<groupId>org.testdriven.jtk</groupId>
 	<artifactId>jtk</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -10,105 +19,14 @@
 	<description>Java Test Killer is a source code quality assurance product that verifies if all test methods contain assertions.</description>
 	<url>http://testdriven.org/jtk</url>
 
-	<scm>
-		<connection>scm:git:https://github.com/testdriven/jtk</connection>
-		<url>https://github.com/testdriven/jtk</url>
-	</scm>
-
-	<ciManagement>
-		<system>jenkins</system>
-		<url>http://jenkins.testdriven.org/job/jtk</url>
-	</ciManagement>
-
-	<issueManagement>
-		<system>github</system>
-		<url>https://github.com/testdriven/jtk/issues</url>
-	</issueManagement>
-
-	<distributionManagement>
-		<repository>
-			<id>testdriven-releases</id>
-			<url>http://testdriven.org/nexus/content/repositories/releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>testdriven-snapshots</id>
-			<url>http://testdriven.org/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>
-		<site>
-			<id>testdriven.org</id>
-			<url>scp://testdriven.org/srv/www/testdriven.org/html/jtk/</url>
-		</site>
-	</distributionManagement>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>m.g.o-public</id>
-			<url>http://maven.glassfish.org/content/groups/public/</url>
-		</pluginRepository>
-	</pluginRepositories>
-
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.2</version>
-					<dependencies>
-						<dependency><!-- add support for ssh/scp -->
-							<groupId>org.apache.maven.wagon</groupId>
-							<artifactId>wagon-ssh</artifactId>
-							<version>1.0</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-	<repositories>
-		<repository>
-			<id>m.g.o-public</id>
-			<url>https://maven.glassfish.org/content/groups/public/</url>
-		</repository>
-	</repositories>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.easytesting</groupId>
-			<artifactId>fest-assert</artifactId>
-			<version>1.2</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.8.3</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 	<developers>
 		<developer>
 			<id>padcom</id>
 			<name>Matthias Hryniszak</name>
 			<email>padcom@gmail.com</email>
 			<url>http://padcom13.blogspot.com</url>
-			<organization>Aplaline</organization>
-			<organizationUrl>http://www.aplaline.com</organizationUrl>
+			<organization>testdriven.org</organization>
+			<organizationUrl>http://testdriven.org</organizationUrl>
 			<roles>
 				<role>architect</role>
 				<role>developer</role>
@@ -127,10 +45,67 @@
 			<timezone>+1</timezone>
 		</developer>
 	</developers>
+
+	<scm>
+		<connection>scm:git:https://github.com/testdriven/jtk</connection>
+		<url>https://github.com/testdriven/jtk</url>
+	</scm>
+
+	<ciManagement>
+		<system>jenkins</system>
+		<url>http://testdriven.org/jenkins/job/jtk</url>
+	</ciManagement>
+
+	<issueManagement>
+		<system>github</system>
+		<url>https://github.com/testdriven/jtk/issues</url>
+	</issueManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>testdriven-releases</id>
+			<url>http://testdriven.org/nexus/content/repositories/releases/</url>
+		</repository>
+		<site>
+			<id>testdriven.org</id>
+			<url>scp://testdriven.org/srv/www/testdriven.org/html/jtk/</url>
+		</site>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>testdriven-releases</id>
+			<url>http://testdriven.org/nexus/content/repositories/releases/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert</artifactId>
+			<version>1.2</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.3</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
 	<modules>
 		<module>jtk-core</module>
 		<module>jtk-hudson-plugin</module>
 		<module>jtk-maven-plugin</module>
-    <module>jtk-cli</module>
-  </modules>
+		<module>jtk-cli</module>
+	</modules>
 </project>
